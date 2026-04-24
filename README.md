@@ -1,6 +1,6 @@
-# 📊 ORION (Operational Risk and Investment Optimization Network)
+#  ORION (Operational Risk and Investment Optimization Network)
 
-## ⚠️ IMPORTANT DISCLAIMER
+##  IMPORTANT DISCLAIMER
 **THIS PROJECT IS FOR EDUCATIONAL PURPOSES ONLY**
 
 - NOT financial advice
@@ -12,7 +12,7 @@ Always consult qualified financial advisors before making investment decisions.
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 
 A comprehensive full-stack web application that demonstrates:
 - **Data Science & AI**: Risk analysis, predictive modeling, sentiment analysis
@@ -23,18 +23,18 @@ A comprehensive full-stack web application that demonstrates:
 
 ### Key Features
 
-✅ **User Authentication**
+**User Authentication**
 - Secure registration and login
 - Risk profile selection (Conservative/Moderate/Aggressive)
 - Session management
 
-✅ **Portfolio Management**
+**Portfolio Management**
 - Create multiple portfolios
 - Add/remove stock holdings
 - Real-time price updates via yfinance
 - Portfolio performance tracking
 
-✅ **Stock Risk Analysis**
+**Stock Risk Analysis**
 - Volatility calculation
 - Maximum drawdown
 - Sharpe & Sortino ratios
@@ -42,7 +42,7 @@ A comprehensive full-stack web application that demonstrates:
 - Risk-reward ratio
 - Fundamental health score
 
-✅ **Portfolio Risk Analysis**
+**Portfolio Risk Analysis**
 - Overall portfolio risk score
 - Asset allocation analysis
 - Sector exposure
@@ -51,26 +51,26 @@ A comprehensive full-stack web application that demonstrates:
 - Concentration risk assessment
 - Portfolio health score (0-100)
 
-✅ **AI Recommendations**
+**AI Recommendations**
 - Rule-based Buy/Hold/Sell signals
 - Explainable AI with detailed reasoning
 - Risk profile alignment
 - Confidence scores
 - Educational warnings
 
-✅ **Market Sentiment Analysis**
+**Market Sentiment Analysis**
 - NLP-based sentiment scoring
 - News headline analysis (demo)
 - Positive/Neutral/Negative classification
 
-✅ **Visualizations**
+**Visualizations**
 - Interactive price charts (Chart.js)
 - Asset allocation pie charts
 - Sector exposure bar charts
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 ### Backend
 - **Python 3.8+**
@@ -97,45 +97,8 @@ A comprehensive full-stack web application that demonstrates:
 
 ---
 
-## 📁 Project Structure
 
-```
-project-root/
-├── app.py                          # Main Flask application
-├── config.py                       # Configuration settings
-├── requirements.txt                # Python dependencies
-│
-├── database/
-│   └── schema.sql                  # MySQL database schema
-│
-├── routes/
-│   ├── auth_routes.py              # Authentication routes
-│   ├── portfolio_routes.py         # Portfolio management routes
-│   └── stock_routes.py             # Stock analysis routes
-│
-├── services/
-│   ├── data_fetcher.py             # Stock data fetching (yfinance)
-│   ├── risk_calculator.py          # Risk metrics calculation
-│   ├── portfolio_analysis.py       # Portfolio-level analysis
-│   ├── ai_engine.py                # Rule-based AI recommendations
-│   └── sentiment_analysis.py       # NLP sentiment analysis
-│
-└── templates/
-    ├── base.html                   # Base template
-    ├── login.html                  # Login page
-    ├── register.html               # Registration page
-    ├── dashboard.html              # Main dashboard
-    ├── portfolio.html              # Portfolio details
-    ├── stock_analysis.html         # Stock analysis page
-    ├── compare_stocks.html         # Stock comparison
-    ├── profile.html                # User profile
-    ├── disclaimer.html             # Disclaimer page
-    └── error.html                  # Error page
-```
-
----
-
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### Prerequisites
 
@@ -237,7 +200,7 @@ You should see:
 ======================================================================
 ORION (Operational Risk and Investment Optimization Network)
 ======================================================================
-⚠️  EDUCATIONAL PURPOSE ONLY - NOT FINANCIAL ADVICE
+EDUCATIONAL PURPOSE ONLY - NOT FINANCIAL ADVICE
 ======================================================================
 Environment: development
 Debug Mode: True
@@ -257,7 +220,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 👤 Demo Login Credentials
+##  Demo Login Credentials
 
 ```
 Username: demo_user
@@ -266,7 +229,7 @@ Password: test123
 
 ---
 
-## 📖 How to Use
+##  How to Use
 
 ### 1. Register/Login
 - Create a new account or use demo credentials
@@ -302,7 +265,7 @@ Password: test123
 
 ---
 
-## 🎓 Educational Value
+##  Educational Value
 
 ### Learning Objectives
 
@@ -351,7 +314,7 @@ This project demonstrates:
 
 ---
 
-## 🧮 Risk Metrics Explained
+##  Risk Metrics Explained
 
 ### Volatility
 - Standard deviation of daily returns
@@ -382,7 +345,7 @@ This project demonstrates:
 
 ---
 
-## 🤖 AI Explanation
+##  AI Explanation
 
 ### Rule-Based System
 
@@ -414,7 +377,7 @@ The AI is **NOT** a black-box neural network. It's a transparent rule-based expe
 
 ---
 
-## 📊 Database Schema Highlights
+##  Database Schema Highlights
 
 ### Tables
 
@@ -436,7 +399,7 @@ The AI is **NOT** a black-box neural network. It's a transparent rule-based expe
 
 ---
 
-## 🔒 Security Features
+##  Security Features
 
 1. **Password Security**
    - Bcrypt hashing
@@ -458,7 +421,7 @@ The AI is **NOT** a black-box neural network. It's a transparent rule-based expe
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### MySQL Connection Error
 ```
@@ -494,7 +457,7 @@ python -m textblob.download_corpora
 
 ---
 
-## 📝 Assignment/Project Submission Guide
+##  Assignment/Project Submission Guide
 
 ### For Students/Interns
 
@@ -547,7 +510,7 @@ This project is ideal for:
 
 ---
 
-## 📚 Further Reading
+##  Further Reading
 
 ### Financial Concepts
 - Modern Portfolio Theory
@@ -563,21 +526,21 @@ This project is ideal for:
 
 ---
 
-## ⚖️ License & Usage
+##  License & Usage
 
-### Academic Use: ✅ Allowed
+### Academic Use:  Allowed
 - University projects
 - Learning purposes
 - Portfolio demonstrations
 
-### Commercial Use: ❌ Not Recommended
+### Commercial Use:  Not Recommended
 - This is a simplified educational system
 - Not suitable for production trading
 - Lacks necessary regulatory compliance
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 This is an educational project. Feel free to:
 - Fork and modify
@@ -587,7 +550,7 @@ This is an educational project. Feel free to:
 
 ---
 
-## 📧 Support
+##  Support
 
 For questions about this project:
 1. Review the code comments
@@ -596,7 +559,7 @@ For questions about this project:
 
 ---
 
-## 🏆 Project Highlights
+##  Project Highlights
 
 ### What Makes This Project Special
 
@@ -610,7 +573,7 @@ For questions about this project:
 
 ---
 
-## 📊 Demo Stock Symbols (Indian Market)
+##  Demo Stock Symbols (Indian Market)
 
 **Use these symbols for testing:**
 
@@ -624,25 +587,25 @@ For questions about this project:
 
 ---
 
-## 🎯 Success Criteria
+##  Success Criteria
 
 This project successfully demonstrates:
 
-✅ Data fetching from external APIs  
-✅ Complex calculations and algorithms  
-✅ Database design and management  
-✅ User authentication and authorization  
-✅ RESTful API architecture  
-✅ Frontend-backend integration  
-✅ Data visualization  
-✅ Error handling and validation  
-✅ Security best practices  
-✅ Code organization and modularity  
-✅ Documentation and comments  
+ Data fetching from external APIs  
+ Complex calculations and algorithms  
+ Database design and management  
+ User authentication and authorization  
+ RESTful API architecture  
+ Frontend-backend integration  
+ Data visualization  
+ Error handling and validation  
+ Security best practices  
+ Code organization and modularity  
+ Documentation and comments  
 
 ---
 
-## 📅 Project Timeline
+##  Project Timeline
 
 **Estimated development time**: 40-60 hours
 
@@ -654,7 +617,7 @@ This project successfully demonstrates:
 
 ---
 
-## 🌟 Final Note
+##  Final Note
 
 This project is a **learning tool** that brings together multiple technologies to solve a real-world problem. While it uses actual stock data and realistic calculations, it should **never** be used for real financial decisions.
 
@@ -669,6 +632,6 @@ The goal is to:
 
 ---
 
-**Built with ❤️ for education**
+**Built with  for education**
 
 *Version 1.0.0 - December 2025*
