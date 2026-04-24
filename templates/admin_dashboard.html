@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .admin-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .admin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .stat-value {
+        font-size: 3rem;
+        font-weight: 700;
+        background: var(--gradient-sunset);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 0.5rem;
+    }
+    
+    .user-table {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .user-table th {
+        background: linear-gradient(135deg, rgba(88, 28, 135, 0.3), rgba(59, 130, 246, 0.3));
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .user-table td {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+    }
+    
+    .user-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-active {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .status-inactive {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+    
+    .activity-item {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+    }
+    
+    .activity-item.login {
+        border-left-color: #10b981;
+    }
+    
+    .activity-item.logout {
+        border-left-color: #f59e0b;
+    }
+    
+    .activity-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+    }
+    
+    .chart-container {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2 gradient-text-sunset">Admin Dashboard</h1>
+        <p class="text-gray-400">Monitor user activity and platform statistics</p>
+    </div>
+    
+    <!-- Currently Online Users Section (Prominent) -->
+    <div class="mb-8">
+        <div class="admin-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
+            <div class="absolute top-0 right-0 text-9xl opacity-10">
+                <i class="fas fa-circle"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-3xl font-bold flex items-center">
+                        <span class="relative flex h-4 w-4 mr-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+                        </span>
+                        Currently Online Users
+                    </h2>
+                    <button onclick="location.reload()" class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-all duration-300 flex items-center space-x-2">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-6xl font-bold mb-2">
+                            {{ recent_activity | selectattr('action_type', 'equalto', 'LOGIN') | list | length }}
+                        </div>
+                        <div class="text-xl opacity-90">Users logged in recently</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4 max-h-40 overflow-y-auto">
+                        <div class="space-y-2">
+                            {% for activity in recent_activity %}
+                            {% if activity.action_type == 'LOGIN' %}
+                            <div class="flex items-center justify-between text-sm bg-white bg-opacity-10 rounded px-3 py-2">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user-circle text-green-400"></i>
+                                    <span class="font-semibold">{{ activity.username }}</span>
+                                </div>
+                                <span class="text-xs opacity-75">{{ activity.timestamp.strftime('%H:%M:%S') }}</span>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Users -->
+        <div class="admin-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="stat-value">{{ total_users }}</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="text-5xl opacity-20">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Active Users -->
+        <div class="admin-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="stat-value">{{ active_users }}</div>
+                    <div class="stat-label">Active Users (30 Days)</div>
+                </div>
+                <div class="text-5xl opacity-20">
+                    <i class="fas fa-user-check"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Users This Month -->
+        <div class="admin-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="stat-value">{{ new_users_this_month }}</div>
+                    <div class="stat-label">New This Month</div>
+                </div>
+                <div class="text-5xl opacity-20">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Login Statistics Chart -->
+    <div class="mb-8">
+        <div class="chart-container">
+            <h2 class="text-2xl font-bold mb-4 gradient-text-ocean">Login Activity (Last 30 Days)</h2>
+            <canvas id="loginChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4 gradient-text-forest">Recent Activity</h2>
+        <div class="max-h-96 overflow-y-auto">
+            {% for activity in recent_activity %}
+            <div class="activity-item {{ activity.action_type.lower() }}">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="text-2xl">
+                            {% if activity.action_type == 'LOGIN' %}
+                            <i class="fas fa-sign-in-alt text-green-400"></i>
+                            {% else %}
+                            <i class="fas fa-sign-out-alt text-yellow-400"></i>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <div class="font-semibold">
+                                {{ activity.username or 'Unknown' }}
+                                <span class="text-gray-400 text-sm">({{ activity.email or 'No email' }})</span>
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                {{ activity.action_description }} from {{ activity.ip_address }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        {{ activity.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- All Users Table -->
+    <div>
+        <h2 class="text-2xl font-bold mb-4 gradient-text-sunset">All Registered Users</h2>
+        <div class="user-table overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Risk Profile</th>
+                        <th>Status</th>
+                        <th>Terms Accepted</th>
+                        <th>Registered</th>
+                        <th>Last Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in all_users %}
+                    <tr>
+                        <td>{{ user.user_id }}</td>
+                        <td class="font-semibold">{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.full_name or 'N/A' }}</td>
+                        <td>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold" 
+                                  style="background: {% if user.risk_profile == 'Aggressive' %}#ef4444{% elif user.risk_profile == 'Moderate' %}#f59e0b{% else %}#10b981{% endif %}; color: white;">
+                                {{ user.risk_profile }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                {{ 'Active' if user.is_active else 'Inactive' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            {% if user.terms_accepted %}
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            {% else %}
+                            <i class="fas fa-times-circle text-red-400"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                        <td>{{ user.last_login.strftime('%Y-%m-%d %H:%M') if user.last_login else 'Never' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Login Activity Chart
+    const loginStats = {{ login_stats | tojson }};
+    
+    const labels = loginStats.map(stat => stat.login_date).reverse();
+    const uniqueLogins = loginStats.map(stat => stat.unique_logins).reverse();
+    const totalLogins = loginStats.map(stat => stat.total_logins).reverse();
+    
+    const ctx = document.getElementById('loginChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Unique Users',
+                    data: uniqueLogins,
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Total Logins',
+                    data: totalLogins,
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: {
+                            size: 14,
+                            family: 'Inter'
+                        }
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.6)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.6)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

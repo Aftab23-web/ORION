@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Disclaimer - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-yellow-500 px-6 py-4">
+            <h1 class="text-3xl font-bold text-white flex items-center">
+                <svg class="w-10 h-10 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+                Important Disclaimer
+            </h1>
+        </div>
+        
+        <div class="p-8 space-y-6">
+            <div class="prose max-w-none">
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                    <h2 class="text-2xl font-bold text-red-800 mb-2">⚠️ READ CAREFULLY</h2>
+                    <p class="text-red-700 font-semibold">
+                        This platform is designed EXCLUSIVELY for educational and analytical purposes.
+                        It is NOT intended for real trading or investment decisions.
+                    </p>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">1. Educational Purpose Only</h3>
+                <p class="text-gray-700 mb-4">
+                    ORION (Operational Risk and Investment Optimization Network) is an <strong>educational project</strong> 
+                    designed to demonstrate:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>Data science and machine learning techniques in finance</li>
+                    <li>Risk analysis and portfolio management concepts</li>
+                    <li>Web application development with Python and Flask</li>
+                    <li>Integration of various technologies (MySQL, yfinance, scikit-learn, TextBlob)</li>
+                    <li>Explainable AI and rule-based decision systems</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">2. NOT Financial Advice</h3>
+                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
+                    <p class="text-gray-700 mb-2">
+                        <strong>This platform does NOT provide financial advice, investment recommendations, 
+                        or trading signals.</strong>
+                    </p>
+                    <p class="text-gray-700">
+                        All analysis, recommendations, and metrics shown are:
+                    </p>
+                    <ul class="list-disc pl-6 text-gray-700 mt-2 space-y-1">
+                        <li>Generated using simplified algorithms for demonstration</li>
+                        <li>Based on historical data which does not predict future performance</li>
+                        <li>Not validated by financial professionals or regulatory bodies</li>
+                        <li>Intentionally simplified for educational understanding</li>
+                    </ul>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">3. No Real Trading</h3>
+                <p class="text-gray-700 mb-4">
+                    This platform does NOT:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>Execute real stock trades</li>
+                    <li>Connect to your actual brokerage accounts</li>
+                    <li>Handle real money or investments</li>
+                    <li>Place orders on stock exchanges</li>
+                    <li>Provide live trading capabilities</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">4. Data Limitations</h3>
+                <p class="text-gray-700 mb-2">
+                    The data and analysis provided:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>May contain delays or inaccuracies</li>
+                    <li>Uses free data sources which may have limitations</li>
+                    <li>Sentiment analysis uses sample/mock news headlines for demonstration</li>
+                    <li>May not reflect real-time market conditions</li>
+                    <li>Should not be considered comprehensive or complete</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">5. AI System Limitations</h3>
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
+                    <p class="text-gray-700 mb-2">
+                        The "AI" in this system is a <strong>rule-based expert system</strong>, not a 
+                        sophisticated machine learning model. It:
+                    </p>
+                    <ul class="list-disc pl-6 text-gray-700 mt-2 space-y-1">
+                        <li>Uses transparent, predefined rules for recommendations</li>
+                        <li>Does not learn from data or adapt to market conditions</li>
+                        <li>Provides explainable outputs for educational purposes</li>
+                        <li>Is intentionally simplified to be understandable</li>
+                        <li>Should NOT be compared to professional trading algorithms</li>
+                    </ul>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">6. Risk Warning</h3>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-lg mb-4">
+                    <p class="text-red-800 font-semibold mb-2">
+                        ⚠️ Stock market investments involve substantial risk of loss.
+                    </p>
+                    <ul class="list-disc pl-6 text-red-700 space-y-1">
+                        <li>You can lose some or all of your invested capital</li>
+                        <li>Past performance is not indicative of future results</li>
+                        <li>No system can predict market movements with certainty</li>
+                        <li>Diversification does not guarantee profits or protect against losses</li>
+                    </ul>
+                </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">7. Professional Advice</h3>
+                <p class="text-gray-700 mb-4">
+                    Before making any investment decisions, you should:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>Consult with a qualified financial advisor</li>
+                    <li>Conduct your own thorough research</li>
+                    <li>Understand your own risk tolerance and financial situation</li>
+                    <li>Consider your investment objectives and time horizon</li>
+                    <li>Read all relevant disclosure documents</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">8. Liability Disclaimer</h3>
+                <p class="text-gray-700 mb-4">
+                    The creators, developers, and operators of this platform:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>Are NOT responsible for any investment losses</li>
+                    <li>Make no warranties about accuracy or completeness of information</li>
+                    <li>Provide this tool "AS IS" without any guarantees</li>
+                    <li>Are not liable for any direct or indirect damages</li>
+                    <li>Do not endorse any particular investment strategy</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">9. Regulatory Compliance</h3>
+                <p class="text-gray-700 mb-4">
+                    This platform is not registered with any financial regulatory authority. It does not 
+                    require registration because it:
+                </p>
+                <ul class="list-disc pl-6 text-gray-700 mb-4 space-y-2">
+                    <li>Does not provide investment advice</li>
+                    <li>Does not manage client assets</li>
+                    <li>Does not execute trades</li>
+                    <li>Serves purely educational purposes</li>
+                </ul>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-3">10. Your Acknowledgment</h3>
+                <div class="bg-gray-100 border border-gray-300 p-4 rounded-lg">
+                    <p class="text-gray-800 font-semibold">
+                        By using this platform, you acknowledge that:
+                    </p>
+                    <ul class="list-disc pl-6 text-gray-700 mt-2 space-y-1">
+                        <li>You have read and understood this disclaimer</li>
+                        <li>You will use this platform for educational purposes only</li>
+                        <li>You will not make investment decisions based solely on this platform</li>
+                        <li>You accept full responsibility for your investment decisions</li>
+                        <li>You understand the risks involved in stock market investing</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 p-6 bg-purple-50 border border-purple-200 rounded-lg">
+                <h4 class="text-lg font-bold text-purple-900 mb-2">📚 Educational Value</h4>
+                <p class="text-purple-800 text-sm">
+                    This project demonstrates real-world application of:
+                    <strong>Python programming, Flask web framework, MySQL database management, 
+                    data analysis with Pandas and NumPy, financial risk calculations, 
+                    rule-based AI systems, NLP sentiment analysis, and full-stack web development.</strong>
+                </p>
+                <p class="text-purple-800 text-sm mt-2">
+                    It is suitable for academic projects, portfolio demonstrations, and learning purposes.
+                </p>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="{{ url_for('portfolio.dashboard') }}" 
+                   class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition font-medium">
+                    I Understand - Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-6 text-center text-sm text-gray-600">
+        <p>Last Updated: December 2025</p>
+        <p class="mt-2">{{ app_name }} v{{ app_version }}</p>
+    </div>
+</div>
+{% endblock %}

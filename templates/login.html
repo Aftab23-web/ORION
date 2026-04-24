@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block title %}Login - {{ app_name }}{% endblock %}
+
+{% block content %}
+<style>
+    @keyframes gradient-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes particle-float {
+        0%, 100% { 
+            transform: translateY(0px) translateX(0px) rotate(0deg); 
+            opacity: 0.6;
+        }
+        50% { 
+            transform: translateY(-30px) translateX(20px) rotate(180deg); 
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { 
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.4), 0 0 60px rgba(167, 139, 250, 0.2), 0 20px 60px rgba(0, 0, 0, 0.6); 
+        }
+        50% { 
+            box-shadow: 0 0 50px rgba(167, 139, 250, 0.6), 0 0 100px rgba(167, 139, 250, 0.3), 0 20px 80px rgba(0, 0, 0, 0.8); 
+        }
+    }
+
+    @keyframes float-smooth {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+
+    @keyframes neon-flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+
+    .gradient-bg {
+        background: linear-gradient(-45deg, #0B1120, #1A1F2E, #2D1B4E, #1A1F2E);
+        background-size: 400% 400%;
+        animation: gradient-shift 20s ease infinite;
+        position: relative;
+    }
+
+    .gradient-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(167, 139, 250, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 20%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+        animation: pulse-glow 8s ease-in-out infinite;
+    }
+
+    .particle {
+        position: absolute;
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.8), rgba(236, 72, 153, 0.8));
+        border-radius: 50%;
+        filter: blur(2px);
+        animation: particle-float 8s infinite ease-in-out;
+        box-shadow: 0 0 20px rgba(167, 139, 250, 0.6);
+    }
+
+    .login-card {
+        backdrop-filter: blur(30px) saturate(180%);
+        background: linear-gradient(135deg, rgba(26, 31, 46, 0.95), rgba(30, 41, 59, 0.9));
+        border: 2px solid rgba(167, 139, 250, 0.3);
+        box-shadow: 0 0 60px rgba(167, 139, 250, 0.4), 0 20px 80px rgba(0, 0, 0, 0.8);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(167, 139, 250, 0.1),
+            transparent
+        );
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        filter: brightness(2.5) saturate(1.5) contrast(1.5) drop-shadow(0 0 8px rgba(248, 250, 252, 0.8));
+    }
+
+    .styled-input {
+        padding-left: 52px;
+        background: rgba(26, 31, 46, 0.8) !important;
+        border: 2px solid rgba(167, 139, 250, 0.3) !important;
+        color: #F8FAFC !important;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .styled-input:focus {
+        border-color: rgba(167, 139, 250, 0.8) !important;
+        box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2), 0 0 30px rgba(167, 139, 250, 0.4) !important;
+        background: rgba(26, 31, 46, 0.95) !important;
+        transform: translateY(-2px);
+    }
+
+    .styled-input::placeholder {
+        color: rgba(226, 232, 240, 0.5);
+    }
+
+    .feature-badge {
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(236, 72, 153, 0.2));
+        border: 2px solid rgba(167, 139, 250, 0.4);
+        color: #F8FAFC;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 0 20px rgba(167, 139, 250, 0.3), 0 4px 15px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s;
+    }
+
+    .feature-badge:hover {
+        transform: translateX(10px) scale(1.05);
+        box-shadow: 0 0 30px rgba(167, 139, 250, 0.5), 0 8px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .feature-badge svg {
+        filter: brightness(2.5) drop-shadow(0 0 8px rgba(167, 139, 250, 0.8));
+    }
+
+    .login-btn {
+        background: linear-gradient(135deg, #A78BFA 0%, #EC4899 50%, #8B5CF6 100%);
+        background-size: 200% 200%;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(167, 139, 250, 0.5);
+        box-shadow: 0 0 30px rgba(167, 139, 250, 0.6), 0 10px 40px rgba(0, 0, 0, 0.6);
+        animation: gradient-shift 3s ease infinite;
+    }
+
+    .login-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .login-btn:hover::before {
+        left: 100%;
+    }
+
+    .login-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 0 50px rgba(167, 139, 250, 0.8), 0 15px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+        border: 2px solid rgba(251, 191, 36, 0.5);
+        border-left: 4px solid #FBBF24;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+    }
+
+    .logo-3d {
+        font-size: 8rem;
+        animation: float-smooth 4s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(167, 139, 250, 0.8));
+    }
+
+    .brand-title {
+        background: linear-gradient(135deg, #A78BFA 0%, #EC4899 50%, #FBBF24 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: neon-flicker 3s ease-in-out infinite;
+        text-shadow: 0 0 30px rgba(167, 139, 250, 0.5);
+    }
+
+    .glass-reflection {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+        border-radius: 24px 24px 0 0;
+        pointer-events: none;
+    }
+
+    .form-label {
+        color: #E2E8F0 !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<div class="min-h-screen flex items-center justify-center gradient-bg relative overflow-hidden">
+    <!-- Enhanced Floating Particles -->
+    <div class="particle" style="top: 10%; left: 10%; width: 15px; height: 15px; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 20%; left: 80%; width: 12px; height: 12px; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 60%; left: 15%; width: 18px; height: 18px; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 80%; left: 70%; width: 14px; height: 14px; animation-delay: 3s;"></div>
+    <div class="particle" style="top: 40%; left: 90%; width: 16px; height: 16px; animation-delay: 4s;"></div>
+    <div class="particle" style="top: 30%; left: 50%; width: 13px; height: 13px; animation-delay: 2.5s;"></div>
+
+    <div class="container mx-auto px-4 py-12 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+            <!-- Left Side - Branding & Info -->
+            <div class="text-white space-y-8 hidden lg:block animate-fade-in-up">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="logo-3d">📊</div>
+                    </div>
+                    <h1 class="text-7xl font-extrabold leading-tight mb-6">
+                        Welcome to<br>
+                        <span class="brand-title">{{ app_name }}</span>
+                    </h1>
+                    <p class="text-2xl text-purple-100 font-medium" style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);">
+                        Operational Risk and Investment Optimization Network
+                    </p>
+                </div>
+
+                <div class="space-y-5 mt-16">
+                    <div class="feature-badge">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                        </svg>
+                        Real-time Market Analysis
+                    </div>
+                    <div class="feature-badge">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/>
+                        </svg>
+                        AI-Powered Insights
+                    </div>
+                    <div class="feature-badge">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Secure Portfolio Management
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <p class="text-sm font-bold text-yellow-100 flex items-center gap-3">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" style="filter: brightness(2) drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        Educational Purpose Only - Not Financial Advice
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="w-full max-w-md mx-auto animate-scale-in">
+                <div class="login-card rounded-3xl p-12 relative" style="animation: pulse-glow 4s infinite;">
+                    <div class="glass-reflection"></div>
+                    
+                    <!-- Mobile Logo -->
+                    <div class="lg:hidden text-center mb-10 relative z-10">
+                        <div class="text-7xl mb-6 logo-3d">📊</div>
+                        <h2 class="text-4xl font-extrabold brand-title">
+                            {{ app_name }}
+                        </h2>
+                    </div>
+
+                    <div class="text-center mb-10 relative z-10">
+                        <h3 class="text-4xl font-extrabold mb-3 brand-title">
+                            Sign In
+                        </h3>
+                        <p class="text-lg font-semibold" style="color: #E2E8F0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Access your investment dashboard</p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-7 relative z-10">
+                        <!-- Username Input -->
+                        <div class="input-wrapper">
+                            <label for="username" class="block form-label mb-3">
+                                Username
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    required
+                                    class="styled-input appearance-none rounded-xl block w-full px-6 py-4 placeholder-gray-400 focus:outline-none transition-all duration-300"
+                                    placeholder="Enter your username"
+                                >
+                                <svg class="input-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #F8FAFC !important;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="input-wrapper">
+                            <label for="password" class="block form-label mb-3">
+                                Password
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required
+                                    class="styled-input appearance-none rounded-xl block w-full px-6 py-4 placeholder-gray-400 focus:outline-none transition-all duration-300"
+                                    placeholder="Enter your password"
+                                >
+                                <svg class="input-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #F8FAFC !important;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit"
+                            class="login-btn w-full py-5 px-8 text-white font-extrabold rounded-xl shadow-lg transform transition-all duration-300 flex items-center justify-center gap-4 text-xl mt-8"
+                        >
+                            <span>Sign In</span>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="filter: brightness(2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Register Link -->
+                    <div class="mt-10 text-center relative z-10">
+                        <p class="text-base font-semibold" style="color: #E2E8F0;">
+                            Don't have an account?
+                            <a href="{{ url_for('auth.register') }}" class="font-extrabold ml-2 hover:underline brand-title" style="filter: brightness(1.3); font-size: 1.05rem;">
+                                Create Account →
+                            </a>
+                        </p>
+                    </div>
+
+                    <!-- Disclaimer Mobile -->
+                    <div class="lg:hidden mt-8 relative z-10">
+                        <div class="stats-card">
+                            <p class="text-sm font-bold text-yellow-100 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" style="filter: brightness(2) drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                Educational Purpose Only
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center text-sm font-semibold mt-8 opacity-90" style="color: #E2E8F0; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);">
+                    By signing in, you acknowledge this is an educational platform<br class="hidden sm:block">
+                    and not intended for real financial decisions.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+@startuml ORION_UseCase_Diagram
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+title ORION System - Use Case Diagram
+
+actor "User" as User
+actor "Admin" as Admin
+actor "Stock Market API" as API
+
+rectangle "ORION System" {
+    
+    ' Authentication
+    (Register Account) as UC1
+    (Login) as UC2
+    (Logout) as UC3
+    (Update Profile) as UC4
+    
+    ' Portfolio Management
+    (Create Portfolio) as UC5
+    (View Portfolio) as UC6
+    (Delete Portfolio) as UC7
+    (Add Stock Holdings) as UC8
+    (Remove Stock Holdings) as UC9
+    
+    ' Stock Analysis
+    (Analyze Stock Risk) as UC10
+    (Get AI Recommendation) as UC11
+    (View Sentiment Analysis) as UC12
+    (Compare Stocks) as UC13
+    
+    ' Portfolio Analysis
+    (View Asset Allocation) as UC14
+    (Calculate Health Score) as UC15
+    (View Diversification) as UC16
+    
+    ' Admin Functions
+    (View User Statistics) as UC17
+    (Monitor Activity Logs) as UC18
+    (Manage Users) as UC19
+}
+
+' User relationships
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+User --> UC8
+User --> UC9
+User --> UC10
+User --> UC11
+User --> UC12
+User --> UC13
+User --> UC14
+User --> UC15
+User --> UC16
+
+' Admin relationships
+Admin --> UC17
+Admin --> UC18
+Admin --> UC19
+Admin --|> User
+
+' Include relationships
+UC10 ..> UC11 : <<include>>
+UC10 ..> UC12 : <<include>>
+UC6 ..> UC14 : <<include>>
+UC6 ..> UC15 : <<include>>
+UC6 ..> UC16 : <<include>>
+
+' Extend relationships
+UC8 ..> UC10 : <<extend>>
+UC13 ..> UC10 : <<extend>>
+
+' API relationships
+UC10 --> API : <<uses>>
+UC11 --> API : <<uses>>
+UC13 --> API : <<uses>>
+
+@enduml

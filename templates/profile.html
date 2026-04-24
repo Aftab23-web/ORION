@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto">
+    <!-- Ultra-Premium Profile Header -->
+    <div class="relative overflow-hidden rounded-3xl shadow-2xl mb-12 animate-fade-in-up depth-card">
+        <!-- Animated Gradient Background -->
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 300% 300%; animation: gradient-shift 15s ease infinite;"></div>
+        
+        <!-- Mesh Pattern Overlay -->
+        <div class="absolute inset-0 opacity-20 cyber-grid"></div>
+        
+        <!-- Floating Orbs -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="blob" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.4), transparent); top: -100px; left: -100px; animation: morph 10s ease-in-out infinite, float 8s ease-in-out infinite;"></div>
+            <div class="blob" style="width: 250px; height: 250px; background: radial-gradient(circle, rgba(255,255,255,0.3), transparent); bottom: -80px; right: -80px; animation: morph 12s ease-in-out infinite reverse, float 10s ease-in-out infinite reverse;"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-20 px-12 py-16 text-center">
+            <!-- Avatar with Premium Effects -->
+            <div class="inline-block relative mb-8 animate-bounce-in">
+                <div class="w-32 h-32 rounded-full p-1 glass-ultra pulse-ring">
+                    <div class="w-full h-full rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1)); backdrop-filter: blur(20px);">
+                        <svg class="w-20 h-20 text-white drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Online Indicator -->
+                <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full border-4 border-white" style="background: #10b981;">
+                    <div class="absolute inset-0 rounded-full animate-ping" style="background: #10b981; opacity: 0.5;"></div>
+                </div>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-6xl font-black text-white mb-4 holographic" style="text-shadow: 0 0 40px rgba(255,255,255,0.6), 0 10px 30px rgba(0,0,0,0.3);">
+                Your Profile
+            </h1>
+            <p class="text-white text-2xl font-bold mb-6" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+                Manage your account settings
+            </p>
+            
+            <!-- Stats Pills -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold">👤 {{ user.username }}</span>
+                </div>
+                <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold">📊 {{ user.risk_profile }}</span>
+                </div>
+                <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold">📅 Member Since {{ user.created_at.strftime('%Y') if user.created_at else 'N/A' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- Ultra-Premium Form Section -->
+    <div class="glass-ultra rounded-3xl shadow-2xl p-10 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <form method="POST" action="{{ url_for('auth.profile') }}" class="space-y-8">
+            <!-- Form Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Username Field -->
+                <div class="depth-card p-6 rounded-2xl transform hover:scale-105 transition-all duration-300">
+                    <label class="block text-sm font-black mb-4 gradient-text-animated">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                        USERNAME
+                    </label>
+                    <div class="relative">
+                        <input type="text" value="{{ user.username }}" disabled
+                               class="w-full px-6 py-4 border-2 rounded-2xl font-bold text-lg transition-all glass-card"
+                               style="color: var(--text-muted); border-color: var(--border-color); cursor: not-allowed;">
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                            <svg class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs mt-3 font-bold" style="color: var(--text-muted);">🔒 Username is permanent</p>
+                </div>
+                
+                <!-- Email Field -->
+                <div class="depth-card p-6 rounded-2xl transform hover:scale-105 transition-all duration-300">
+                    <label class="block text-sm font-black mb-4 gradient-text-animated">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        EMAIL ADDRESS
+                    </label>
+                    <div class="relative">
+                        <input type="email" value="{{ user.email }}" disabled
+                               class="w-full px-6 py-4 border-2 rounded-2xl font-bold text-lg transition-all glass-card"
+                               style="color: var(--text-muted); border-color: var(--border-color); cursor: not-allowed;">
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                            <svg class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs mt-3 font-bold" style="color: var(--text-muted);">🔒 Email is permanent</p>
+                </div>
+            </div>
+            
+            <!-- Full Name Field -->
+            <div class="depth-card p-6 rounded-2xl transform hover:scale-105 transition-all duration-300">
+                <label for="full_name" class="block text-sm font-black mb-4 gradient-text-animated">
+                    <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+                    </svg>
+                    FULL NAME
+                </label>
+                <input type="text" id="full_name" name="full_name" value="{{ user.full_name or '' }}"
+                       class="w-full px-6 py-4 border-2 rounded-2xl font-bold text-lg transition-all duration-300 neon-border"
+                       style="border-color: var(--primary); background: rgba(var(--hover-bg), 0.3);"
+                       placeholder="Enter your full name">
+            </div>
+            
+            <!-- Risk Profile Field -->
+            <div class="depth-card p-6 rounded-2xl transform hover:scale-105 transition-all duration-300">
+                <label for="risk_profile" class="block text-sm font-black mb-4 gradient-text-animated">
+                    <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    RISK PROFILE
+                </label>
+                <select id="risk_profile" name="risk_profile"
+                        class="w-full px-6 py-4 border-2 rounded-2xl font-bold text-lg transition-all duration-300 neon-border"
+                        style="border-color: var(--primary); background: rgba(var(--hover-bg), 0.3); color: var(--text-primary);">
+                    <option value="Conservative" {% if user.risk_profile == 'Conservative' %}selected{% endif %}>
+                        🛡️ Conservative - Low risk, stable returns
+                    </option>
+                    <option value="Moderate" {% if user.risk_profile == 'Moderate' %}selected{% endif %}>
+                        ⚖️ Moderate - Balanced risk and return
+                    </option>
+                    <option value="Aggressive" {% if user.risk_profile == 'Aggressive' %}selected{% endif %}>
+                        🚀 Aggressive - High risk, high potential return
+                    </option>
+                </select>
+                <p class="text-xs mt-3 font-bold" style="color: var(--text-muted);">💡 Influences portfolio analysis and AI recommendations</p>
+            </div>
+            
+            <!-- Member Info Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-6 rounded-2xl">
+                    <label class="block text-sm font-black mb-4 gradient-text-animated">📅 MEMBER SINCE</label>
+                    <div class="text-3xl font-black holographic">
+                        {{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-2xl">
+                    <label class="block text-sm font-black mb-4 gradient-text-animated">⏰ LAST LOGIN</label>
+                    <div class="text-3xl font-black holographic">
+                        {{ user.last_login.strftime('%B %d, %Y') if user.last_login else 'N/A' }}
+                    </div>
+                    <div class="text-sm font-bold mt-2" style="color: var(--text-muted);">
+                        {{ user.last_login.strftime('%H:%M') if user.last_login else '' }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="pt-6">
+                <button type="submit" class="btn-magnetic w-full text-white px-10 py-6 rounded-2xl font-black text-2xl shadow-2xl">
+                    <span class="relative z-10">✨ Update Profile</span>
+                </button>
+            </div>
+        </form>
+            
+        <!-- Ultra-Premium Risk Guide Section -->
+        <div class="mt-12 glass-ultra rounded-3xl p-10 shadow-2xl">
+            <h3 class="text-4xl font-black mb-8 holographic flex items-center">
+                <span class="text-5xl mr-4 animate-bounce">📊</span>
+                Risk Profile Guide
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Conservative Card -->
+                <div class="depth-card rounded-2xl p-8 transform hover:scale-110 hover:rotate-2 transition-all duration-500 group"
+                     style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.1) 100%); border: 3px solid #10B981;">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 pulse-ring"
+                             style="background: linear-gradient(135deg, #10B981, #059669);">
+                            <span class="text-4xl">🛡️</span>
+                        </div>
+                        <h4 class="font-black text-2xl mb-3" style="color: #059669;">Conservative</h4>
+                    </div>
+                    <ul class="space-y-3 text-sm font-bold" style="color: #047857;">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Maximum 40% equities allocation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Low volatility tolerance (10-15%)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Capital preservation focus</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Ideal for risk-averse investors</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Moderate Card -->
+                <div class="depth-card rounded-2xl p-8 transform hover:scale-110 hover:-rotate-2 transition-all duration-500 group"
+                     style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.1) 100%); border: 3px solid #F59E0B;">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 pulse-ring"
+                             style="background: linear-gradient(135deg, #F59E0B, #EA580C);">
+                            <span class="text-4xl">⚖️</span>
+                        </div>
+                        <h4 class="font-black text-2xl mb-3" style="color: #EA580C;">Moderate</h4>
+                    </div>
+                    <ul class="space-y-3 text-sm font-bold" style="color: #C2410C;">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>40-70% equities allocation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Medium volatility tolerance (15-20%)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Balanced growth and stability</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Best for balanced investors</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Aggressive Card -->
+                <div class="depth-card rounded-2xl p-8 transform hover:scale-110 hover:rotate-2 transition-all duration-500 group"
+                     style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.1) 100%); border: 3px solid #EF4444;">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 pulse-ring"
+                             style="background: linear-gradient(135deg, #EF4444, #DC2626);">
+                            <span class="text-4xl">🚀</span>
+                        </div>
+                        <h4 class="font-black text-2xl mb-3" style="color: #DC2626;">Aggressive</h4>
+                    </div>
+                    <ul class="space-y-3 text-sm font-bold" style="color: #B91C1C;">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Over 70% equities allocation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>High volatility tolerance (20%+)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Maximum growth potential</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">✓</span>
+                            <span>Perfect for growth seekers</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.animate-bounce-in {
+    animation: bounce-in 0.6s ease-out;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+}
+</style>
+{% endblock %}

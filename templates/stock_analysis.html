@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}{{ stock_symbol }} Analysis - {{ app_name }}{% endblock %}
+
+{% block content %}
+<!-- Animated Gradient Hero -->
+<div class="relative overflow-hidden py-20 mb-8" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%); background-size: 200% 200%; animation: gradient-shift 8s ease infinite;">
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute w-96 h-96 rounded-full" style="background: var(--primary-light); filter: blur(60px); top: -50px; right: 10%; animation: float 6s ease-in-out infinite;"></div>
+        <div class="absolute w-96 h-96 rounded-full" style="background: var(--secondary-light); filter: blur(60px); bottom: -50px; left: 10%; animation: float 8s ease-in-out infinite reverse;"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-5xl mx-auto animate-bounce-in">
+            <a href="{{ url_for('portfolio.dashboard') }}" class="inline-flex items-center text-white opacity-90 hover:opacity-100 transition-opacity mb-6 text-lg font-medium">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-6xl font-extrabold text-white mb-4 drop-shadow-lg">{{ stock_symbol }}</h1>
+                    <p class="text-2xl text-white opacity-95 mb-4">{{ stock_info.name }}</p>
+                    <div class="flex items-center space-x-6">
+                        <span class="text-4xl font-extrabold text-white drop-shadow-md">₹{{ '{:,.2f}'.format(stock_info.current_price) }}</span>
+                        <span class="text-lg font-semibold text-white opacity-90 px-4 py-2 rounded-full" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);">{{ stock_info.sector }}</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button 
+                        onclick="document.getElementById('addToPortfolioModal').classList.remove('hidden')"
+                        class="mb-4 text-white px-8 py-4 rounded-2xl transition font-bold inline-flex items-center shadow-2xl transform hover:scale-105"
+                        style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);"
+                    >
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add to Portfolio
+                    </button>
+                    <div>
+                        <p class="text-sm text-white opacity-90 mb-2">Risk Level</p>
+                        <span class="inline-block px-6 py-3 rounded-2xl text-base font-bold shadow-xl
+                            {% if risk_metrics.risk_level == 'Low' %}bg-green-100 text-green-800
+                            {% elif risk_metrics.risk_level == 'Medium' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ risk_metrics.risk_level }} Risk
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="space-y-8 container mx-auto px-4 pb-8">
+    <style>
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+    
+    <!-- AI Recommendation -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">🤖 AI Recommendation</h2>
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <span class="inline-block px-6 py-3 rounded-lg text-2xl font-bold
+                    {% if ai_recommendation.action_color == 'success' %}bg-green-100 text-green-800
+                    {% elif ai_recommendation.action_color == 'warning' %}bg-yellow-100 text-yellow-800
+                    {% else %}bg-red-100 text-red-800{% endif %}">
+                    {{ ai_recommendation.recommendation }}
+                </span>
+                <p class="text-sm text-gray-600 mt-2">
+                    Confidence: {{ ai_recommendation.confidence_percentage }}%
+                </p>
+            </div>
+            <div class="text-right">
+                <div class="text-sm text-gray-600 space-y-1">
+                    <div>Buy Score: <span class="font-semibold">{{ ai_recommendation.buy_score }}/100</span></div>
+                    <div>Hold Score: <span class="font-semibold">{{ ai_recommendation.hold_score }}/100</span></div>
+                    <div>Sell Score: <span class="font-semibold">{{ ai_recommendation.sell_score }}/100</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="prose max-w-none">
+            <div class="bg-gray-50 p-4 rounded-lg whitespace-pre-line text-sm">{{ ai_recommendation.explanation }}</div>
+        </div>
+        
+        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p class="text-xs font-semibold text-yellow-800 mb-2">⚠️ Educational Warnings:</p>
+            {% for warning in ai_recommendation.warnings %}
+            <p class="text-xs text-yellow-700">{{ warning }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Price Chart -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Price History (Last 90 Days)</h3>
+        <canvas id="priceChart" width="400" height="150"></canvas>
+    </div>
+    
+    <!-- Risk Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Return Metrics</h4>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Annual Return:</span>
+                    <span class="text-sm font-semibold {% if risk_metrics.annual_return >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                        {{ '{:+.2f}'.format(risk_metrics.annual_return) }}%
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Sharpe Ratio:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.2f'|format(risk_metrics.sharpe_ratio) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Risk-Reward:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.2f'|format(risk_metrics.risk_reward_ratio) }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Risk Metrics</h4>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Volatility (Annual):</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.2f'|format(risk_metrics.annualized_volatility) }}%</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Max Drawdown:</span>
+                    <span class="text-sm font-semibold text-red-600">{{ '%.2f'|format(risk_metrics.max_drawdown) }}%</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Loss Probability:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.1f'|format(risk_metrics.loss_probability * 100) }}%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Health Score</h4>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Fundamental Score:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.0f'|format(risk_metrics.fundamental_score) }}/100</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">Beta:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ '%.2f'|format(risk_metrics.beta) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm text-gray-600">VaR (95%):</span>
+                    <span class="text-sm font-semibold text-red-600">{{ '%.2f'|format(risk_metrics.var_95) }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sentiment Analysis -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Market Sentiment {{ sentiment.sentiment_icon }}</h3>
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-lg font-semibold">Overall: {{ sentiment.overall_sentiment }}</span>
+                <span class="text-sm text-gray-600">Score: {{ sentiment.sentiment_score }}/100</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div class="h-4 rounded-full {% if sentiment.overall_sentiment == 'Positive' %}bg-green-500{% elif sentiment.overall_sentiment == 'Negative' %}bg-red-500{% else %}bg-yellow-500{% endif %}" 
+                     style="width: {{ sentiment.sentiment_score }}%"></div>
+            </div>
+        </div>
+        
+        <div class="space-y-3">
+            {% for headline in sentiment.headlines[:5] %}
+            <div class="p-3 bg-gray-50 rounded-lg">
+                <p class="text-sm font-medium text-gray-900">{{ headline.text }}</p>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-xs text-gray-500">{{ headline.source }} • {{ headline.date }}</span>
+                    <span class="text-xs font-semibold {% if headline.sentiment.polarity_label == 'Positive' %}text-green-600{% elif headline.sentiment.polarity_label == 'Negative' %}text-red-600{% else %}text-gray-600{% endif %}">
+                        {{ headline.sentiment.polarity_label }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p class="text-xs text-blue-800">{{ sentiment.disclaimer }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Price Chart
+const ctx = document.getElementById('priceChart').getContext('2d');
+const chartData = {{ chart_data|tojson }};
+const chartDates = {{ chart_dates|tojson }};
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: chartDates,
+        datasets: [{
+            label: 'Price (₹)',
+            data: chartData.map(d => d.Close),
+            borderColor: '#8b5cf6',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            tension: 0.1,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            x: {
+                display: true,
+                ticks: {
+                    maxTicksLimit: 10
+                }
+            },
+            y: {
+                display: true,
+                beginAtZero: false
+            }
+        }
+    }
+});
+</script>
+
+<!-- Add to Portfolio Modal -->
+<div id="addToPortfolioModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-2xl font-bold text-gray-900">Add {{ stock_symbol }} to Portfolio</h3>
+            <button onclick="document.getElementById('addToPortfolioModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ url_for('portfolio.add_holding') }}">
+            <div class="space-y-4">
+                <div>
+                    <label for="portfolio_id" class="block text-sm font-medium text-gray-700 mb-1">
+                        Select Portfolio *
+                    </label>
+                    <select 
+                        id="portfolio_id" 
+                        name="portfolio_id" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    >
+                        <option value="">Choose a portfolio...</option>
+                        {% for portfolio in portfolios %}
+                        <option value="{{ portfolio.portfolio_id }}">{{ portfolio.portfolio_name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if not portfolios %}
+                    <p class="text-xs text-red-500 mt-1">No portfolios found. <a href="{{ url_for('portfolio.dashboard') }}" class="underline">Create one first</a>.</p>
+                    {% endif %}
+                </div>
+                
+                <input type="hidden" name="stock_symbol" value="{{ stock_symbol }}">
+                
+                <div>
+                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">
+                        Quantity (Shares) *
+                    </label>
+                    <input 
+                        type="number" 
+                        id="quantity" 
+                        name="quantity" 
+                        step="0.01"
+                        min="0.01"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        placeholder="e.g., 10"
+                    >
+                </div>
+                
+                <div>
+                    <label for="purchase_price" class="block text-sm font-medium text-gray-700 mb-1">
+                        Purchase Price (₹) *
+                    </label>
+                    <input 
+                        type="number" 
+                        id="purchase_price" 
+                        name="purchase_price" 
+                        step="0.01"
+                        min="0.01"
+                        required
+                        value="{{ stock_info.current_price }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        placeholder="e.g., 150.50"
+                    >
+                    <p class="text-xs text-gray-500 mt-1">Current price: ₹{{ '{:,.2f}'.format(stock_info.current_price) }}</p>
+                </div>
+                
+                <div>
+                    <label for="purchase_date" class="block text-sm font-medium text-gray-700 mb-1">
+                        Purchase Date *
+                    </label>
+                    <input 
+                        type="date" 
+                        id="purchase_date" 
+                        name="purchase_date" 
+                        required
+                        value="{{ today }}"
+                        max="{{ today }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    >
+                </div>
+            </div>
+            
+            <div class="mt-6 flex space-x-3">
+                <button 
+                    type="button"
+                    onclick="document.getElementById('addToPortfolioModal').classList.add('hidden')"
+                    class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+                >
+                    Cancel
+                </button>
+                <button 
+                    type="submit"
+                    class="flex-1 text-white px-4 py-2 rounded-lg transition font-medium" style="background: var(--secondary);" onmouseover="this.style.background='var(--secondary-dark)'" onmouseout="this.style.background='var(--secondary)'"
+                >
+                    Add Investment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

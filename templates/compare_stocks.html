@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Stocks - {{ app_name }}{% endblock %}
+
+{% block content %}
+<!-- Ultra-Premium Hero Section -->
+<div class="relative overflow-hidden rounded-3xl shadow-2xl mb-12" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 300% 300%; animation: gradient-shift 15s ease infinite;">
+    <!-- Cyber Grid Overlay -->
+    <div class="absolute inset-0 opacity-20 cyber-grid"></div>
+    
+    <!-- Animated Blobs -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="blob" style="width: 450px; height: 450px; background: radial-gradient(circle, rgba(255,255,255,0.4), transparent); top: -150px; left: -150px; animation: morph 12s ease-in-out infinite, float 10s ease-in-out infinite;"></div>
+        <div class="blob" style="width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,255,255,0.3), transparent); bottom: -120px; right: -120px; animation: morph 14s ease-in-out infinite reverse, float 12s ease-in-out infinite reverse;"></div>
+        <div class="blob" style="width: 350px; height: 350px; background: radial-gradient(circle, rgba(255,255,255,0.2), transparent); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: morph 10s ease-in-out infinite, float 8s ease-in-out infinite;"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative z-20 px-12 py-20 text-center">
+        <!-- Main Title -->
+        <h1 class="text-7xl font-black text-white mb-6 holographic" style="text-shadow: 0 0 50px rgba(255,255,255,0.7), 0 10px 40px rgba(0,0,0,0.3);">
+            ⚖️ Compare Stocks
+        </h1>
+        
+        <!-- Subtitle with animation -->
+        <p class="text-3xl text-white font-bold mb-8" style="text-shadow: 0 2px 15px rgba(0,0,0,0.3);">
+            Side-by-side analysis with AI-powered recommendations
+        </p>
+        
+        <!-- Feature Pills -->
+        <div class="flex flex-wrap justify-center gap-4">
+            <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-110 transition-all">
+                <span class="text-white font-bold text-lg">🤖 AI Analysis</span>
+            </div>
+            <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-110 transition-all">
+                <span class="text-white font-bold text-lg">📊 Risk Metrics</span>
+            </div>
+            <div class="glass-ultra px-6 py-3 rounded-2xl transform hover:scale-110 transition-all">
+                <span class="text-white font-bold text-lg">💹 Performance Data</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="space-y-8 container mx-auto px-4 pb-8">
+    <!-- Instructions Card -->
+    <div class="glass-ultra rounded-3xl p-10 shadow-2xl animate-fade-in-up depth-card">
+        <h2 class="text-4xl font-black mb-6 gradient-text-animated flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #A78BFA 0%, #EC4899 100%); border: 2px solid rgba(167, 139, 250, 0.5);">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #FFFFFF !important; filter: brightness(2.5) saturate(1.8) drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+            Compare Stocks & Get AI Recommendation
+        </h2>
+        <p class="text-xl mb-6 font-bold" style="color: var(--text-primary);">
+            Enter 2-5 stock names or symbols separated by commas to compare their risk metrics and get AI-powered investment recommendations
+        </p>
+        
+        <!-- Example Box -->
+        <div class="depth-card p-6 rounded-2xl transform hover:scale-105 transition-all duration-300" 
+             style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(20, 184, 166, 0.2) 100%); border-left: 6px solid var(--primary);">
+            <p class="text-lg font-black mb-4 gradient-text-animated">
+                <span class="text-3xl mr-3">💡</span> Examples:
+            </p>
+            <ul class="space-y-3 text-base font-bold" style="color: var(--primary);">
+                <li class="flex items-center">
+                    <span class="text-2xl mr-3">▶</span>
+                    <span>"Reliance, TCS" or "RELIANCE.NS, TCS.NS"</span>
+                </li>
+                <li class="flex items-center">
+                    <span class="text-2xl mr-3">▶</span>
+                    <span>"Infosys, Wipro, HCL" (compare multiple stocks)</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Premium Form Section -->
+    <div class="glass-ultra rounded-3xl shadow-2xl p-10 animate-slide-up depth-card">
+        <form method="POST" action="{{ url_for('stock.compare_stocks') }}" id="compareForm">
+            <div class="space-y-6">
+                <!-- Input Field -->
+                <div>
+                    <label for="symbols" class="block text-2xl font-black mb-5 gradient-text-animated">
+                        <svg class="w-8 h-8 inline-block mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                        </svg>
+                        Stock Symbols or Company Names
+                    </label>
+                    <input 
+                        type="text" 
+                        id="symbols" 
+                        name="symbols" 
+                        required
+                        placeholder="e.g., Reliance, TCS or RELIANCE.NS, TCS.NS"
+                        class="w-full px-8 py-6 border-3 rounded-2xl font-bold text-xl transition-all duration-300 neon-border"
+                        style="border-color: var(--primary); background: rgba(var(--hover-bg), 0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.15);"
+                        value="{% if symbols %}{{ ','.join(symbols) }}{% endif %}"
+                    >
+                    <p class="text-base mt-4 flex items-center font-bold" style="color: var(--text-muted);">
+                        <span class="text-2xl mr-2">💡</span> 
+                        Enter company names (e.g., "Reliance, TCS") or symbols - minimum 2, maximum 5
+                    </p>
+                </div>
+                
+                <!-- Submit Button -->
+                <button 
+                    type="submit"
+                    id="compareButton"
+                    class="btn-magnetic w-full px-10 py-6 text-white rounded-2xl font-black text-2xl shadow-2xl relative overflow-hidden">
+                    <span id="compareButtonContent" class="relative z-10 flex items-center justify-center gap-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span id="compareButtonText">🚀 Compare Stocks</span>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        let timerInterval;
+        let startTime;
+        
+        document.getElementById('compareForm').addEventListener('submit', function(e) {
+            const button = document.getElementById('compareButton');
+            const buttonContent = document.getElementById('compareButtonContent');
+            
+            // Reset and start timer
+            startTime = Date.now();
+            
+            // Update button content with spinner and timer
+            buttonContent.innerHTML = `
+                <svg class="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span id="timerText">Loading Analysis... 0s</span>
+            `;
+            
+            // Disable button to prevent double submission
+            button.disabled = true;
+            button.style.opacity = '0.8';
+            button.style.cursor = 'not-allowed';
+            
+            // Start timer
+            timerInterval = setInterval(function() {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const timerText = document.getElementById('timerText');
+                if (timerText) {
+                    timerText.textContent = `Loading Analysis... ${elapsed}s`;
+                }
+            }, 100); // Update every 100ms for smooth counting
+        });
+        
+        // Clean up timer if page unloads
+        window.addEventListener('beforeunload', function() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+        });
+    </script>
+    
+    {% if comparison_data %}
+    
+    <!-- Ultra-Premium AI Recommendation Section -->
+    {% if recommendation %}
+    <div class="glass-ultra rounded-3xl shadow-2xl p-10 text-white relative overflow-hidden depth-card animate-fade-in-up">
+        <!-- Gradient Background -->
+        <div class="absolute inset-0 opacity-90" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10">
+            <!-- Header -->
+            <div class="flex items-center mb-8">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center mr-6 pulse-ring"
+                     style="background: rgba(255,255,255,0.3); backdrop-filter: blur(10px);">
+                    <span class="text-5xl">🤖</span>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-black holographic mb-2">AI Investment Recommendation</h3>
+                    <p class="text-xl font-bold" style="opacity: 0.95;">Based on comprehensive risk and return analysis</p>
+                </div>
+            </div>
+            
+            <!-- Recommended Stock Card -->
+            <div class="glass-card rounded-2xl p-8 mb-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h4 class="text-5xl font-black holographic mb-2">{{ recommendation.recommended_stock }}</h4>
+                        <p class="text-2xl font-bold" style="opacity: 0.95;">{{ recommendation.recommended_name }}</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="depth-card px-6 py-3 rounded-2xl mb-3">
+                            <span class="text-2xl font-black gradient-text-animated">{{ recommendation.strategy }}</span>
+                        </div>
+                        <p class="text-lg font-bold" style="opacity: 0.9;">✨ Confidence: {{ recommendation.confidence }}</p>
+                    </div>
+                </div>
+                
+                <!-- Score Progress -->
+                <div class="glass-card rounded-2xl p-6 mb-4">
+                    <p class="text-xl font-black mb-4">Overall Score: {{ '%.0f'|format(recommendation.score) }}/100</p>
+                    <div class="relative">
+                        <div class="w-full rounded-full h-8" style="background: rgba(255, 255, 255, 0.2);">
+                            <div class="h-8 rounded-full flex items-center justify-end pr-4 transition-all duration-1000" 
+                                 style="width: {{ recommendation.score }}%; background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);">
+                                <span class="font-black text-white text-lg">{{ '%.0f'|format(recommendation.score) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if recommendation.comparison %}
+                <div class="glass-card rounded-2xl p-5 flex items-start">
+                    <span class="text-3xl mr-4">💡</span>
+                    <p class="text-lg font-bold italic">{{ recommendation.comparison }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Reasons and Risks Grid -->
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Why Invest -->
+                <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-all duration-300">
+                    <h5 class="text-2xl font-black mb-5 flex items-center gradient-text-animated">
+                        <span class="text-3xl mr-3">✅</span>
+                        Why Invest in {{ recommendation.recommended_stock }}
+                    </h5>
+                    <ul class="space-y-3">
+                        {% for reason in recommendation.reasons[:5] %}
+                        <li class="flex items-start text-base font-bold">
+                            <span class="text-2xl mr-3 text-green-300">▶</span>
+                            <span>{{ reason }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Risk Considerations -->
+                <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-all duration-300">
+                    <h5 class="text-2xl font-black mb-5 flex items-center gradient-text-animated">
+                        <span class="text-3xl mr-3">⚠️</span>
+                        Risk Considerations
+                    </h5>
+                    {% if recommendation.risks %}
+                    <ul class="space-y-3">
+                        {% for risk in recommendation.risks[:5] %}
+                        <li class="flex items-start text-base font-bold">
+                            <span class="text-2xl mr-3 text-yellow-300">▶</span>
+                            <span>{{ risk }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-lg font-bold flex items-center text-green-300">
+                        <span class="text-2xl mr-3">✓</span>
+                        Minimal identified risks based on current data
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Comparative Scores -->
+            <div class="glass-card rounded-2xl p-8">
+                <h5 class="text-3xl font-black mb-6 gradient-text-animated">📊 Comparative Scores</h5>
+                <div class="space-y-5">
+                    {% for item in recommendation.all_scores %}
+                    <div class="depth-card p-5 rounded-2xl transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-2xl font-black holographic">{{ item.stock.symbol }}</span>
+                            <span class="text-2xl font-black gradient-text-animated">{{ '%.0f'|format(item.score) }}</span>
+                        </div>
+                        <div class="relative">
+                            <div class="w-full rounded-full h-6" style="background: rgba(255, 255, 255, 0.2);">
+                                <div class="h-6 rounded-full transition-all duration-1000" 
+                                     style="width: {{ item.score }}%; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+            </div>
+        </div>
+        
+        <div class="mt-4 text-xs text-purple-100 text-center">
+            ⚠️ This is an AI-generated recommendation for educational purposes only. Not financial advice. Always do your own research and consult with a financial advisor.
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="comparison-table-container rounded-lg shadow-md overflow-x-auto" style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 1.5rem;">
+        <table class="min-w-full divide-y comparison-table" style="background: rgba(15, 15, 35, 0.8);">
+            <thead class="comparison-thead" style="background: rgba(20, 20, 50, 0.9);">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium comparison-th uppercase tracking-wider" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 0.95rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Metric</th>
+                    {% for stock in comparison_data %}
+                    <th class="px-6 py-3 text-center text-xs font-medium comparison-th uppercase tracking-wider" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 0.95rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ stock.symbol }}<br>
+                        <span class="text-xs font-normal comparison-stock-name" style="color: #F3F4F6 !important; font-weight: 700 !important; font-size: 0.85rem !important; text-shadow: 0 0 8px rgba(255,255,255,0.9), 0 0 15px rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.7);">{{ stock.name[:20] }}</span>
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="comparison-tbody divide-y" style="background: rgba(15, 15, 35, 0.7);">
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Current Price</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        ₹{{ '{:,.2f}'.format(stock.current_price) }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Risk Level</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <span class="risk-badge {% if stock.metrics.risk_level == 'Low' %}risk-badge-low{% elif stock.metrics.risk_level == 'Medium' %}risk-badge-medium{% else %}risk-badge-high{% endif %}" style="font-weight: 900 !important; font-size: 0.9rem !important; padding: 0.4rem 1rem !important; color: #FFFFFF !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.8);">
+                            {{ stock.metrics.risk_level }}
+                        </span>
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Annual Return</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center font-semibold {% if stock.metrics.annual_return >= 0 %}return-positive{% else %}return-negative{% endif %}" style="{% if stock.metrics.annual_return >= 0 %}color: #10F981 !important; text-shadow: 0 0 15px rgba(16,249,129,1), 0 0 30px rgba(16,249,129,0.8), 0 0 40px rgba(16,249,129,0.6), 0 2px 4px rgba(0,0,0,0.8);{% else %}color: #FF6B9D !important; text-shadow: 0 0 15px rgba(255,107,157,1), 0 0 30px rgba(255,107,157,0.8), 0 0 40px rgba(255,107,157,0.6), 0 2px 4px rgba(0,0,0,0.8);{% endif %} font-weight: 900 !important; font-size: 1.15rem !important;">
+                        {{ '{:+.2f}'.format(stock.metrics.annual_return) }}%
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Volatility (Annual)</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.annualized_volatility) }}%
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Max Drawdown</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center font-semibold metric-negative" style="color: #FF6B9D !important; font-weight: 900 !important; font-size: 1.15rem !important; text-shadow: 0 0 15px rgba(255,107,157,1), 0 0 30px rgba(255,107,157,0.8), 0 0 40px rgba(255,107,157,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.max_drawdown) }}%
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Sharpe Ratio</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.sharpe_ratio) }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Risk-Reward Ratio</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.risk_reward_ratio) }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Beta</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.beta) }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">VaR (95%)</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center metric-negative" style="color: #FF6B9D !important; font-weight: 900 !important; font-size: 1.15rem !important; text-shadow: 0 0 15px rgba(255,107,157,1), 0 0 30px rgba(255,107,157,0.8), 0 0 40px rgba(255,107,157,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.2f'|format(stock.metrics.var_95) }}%
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Fundamental Score</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.0f'|format(stock.metrics.fundamental_score) }}/100
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row" style="background: rgba(30, 30, 60, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Loss Probability</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                        {{ '%.1f'|format(stock.metrics.loss_probability * 100) }}%
+                    </td>
+                    {% endfor %}
+                </tr>
+                
+                <tr class="comparison-row comparison-row-alt" style="background: rgba(40, 40, 70, 0.5);">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold comparison-td" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Detailed Analysis</td>
+                    {% for stock in comparison_data %}
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <a href="{{ url_for('stock.analyze_stock', stock_symbol=stock.symbol) }}" 
+                           class="comparison-link font-medium" style="color: #FDE047 !important; font-weight: 900 !important; font-size: 1.05rem !important; text-decoration: underline; text-shadow: 0 0 15px rgba(253,224,71,1), 0 0 30px rgba(253,224,71,0.8), 0 0 40px rgba(253,224,71,0.6), 0 2px 4px rgba(0,0,0,0.8);">
+                            View Details →
+                        </a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="comparison-insights rounded-lg shadow-md p-6" style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);">
+        <h3 class="text-xl font-bold comparison-insights-title mb-4" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1.5rem !important; text-shadow: 0 0 15px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.8);">Comparison Insights</h3>
+        <div class="space-y-3">
+            {% set best_return = comparison_data | sort(attribute='metrics.annual_return', reverse=true) | first %}
+            {% set lowest_risk = comparison_data | sort(attribute='metrics.annualized_volatility') | first %}
+            {% set best_sharpe = comparison_data | sort(attribute='metrics.sharpe_ratio', reverse=true) | first %}
+            
+            <div class="flex items-center p-4 insight-box insight-box-green rounded-lg" style="background: rgba(20, 20, 50, 0.7); backdrop-filter: blur(5px);">
+                <span class="text-2xl mr-3">📈</span>
+                <div>
+                    <p class="font-semibold insight-text-title" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1.1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.7);">Best Return:</p>
+                    <p class="text-sm insight-text-content" style="color: #F3F4F6 !important; font-weight: 700 !important; font-size: 1rem !important; text-shadow: 0 0 8px rgba(243,244,246,0.9), 0 0 15px rgba(243,244,246,0.7), 0 2px 4px rgba(0,0,0,0.6);">{{ best_return.symbol }} with {{ '{:+.2f}'.format(best_return.metrics.annual_return) }}% annual return</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center p-4 insight-box insight-box-blue rounded-lg" style="background: rgba(20, 20, 50, 0.7); backdrop-filter: blur(5px);">
+                <span class="text-2xl mr-3">🛡️</span>
+                <div>
+                    <p class="font-semibold insight-text-title" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1.1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.7);">Lowest Risk:</p>
+                    <p class="text-sm insight-text-content" style="color: #F3F4F6 !important; font-weight: 700 !important; font-size: 1rem !important; text-shadow: 0 0 8px rgba(243,244,246,0.9), 0 0 15px rgba(243,244,246,0.7), 0 2px 4px rgba(0,0,0,0.6);">{{ lowest_risk.symbol }} with {{ '%.2f'|format(lowest_risk.metrics.annualized_volatility) }}% volatility</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center p-4 insight-box insight-box-purple rounded-lg" style="background: rgba(20, 20, 50, 0.7); backdrop-filter: blur(5px);">
+                <span class="text-2xl mr-3">⭐</span>
+                <div>
+                    <p class="font-semibold insight-text-title" style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 1.1rem !important; text-shadow: 0 0 10px rgba(255,255,255,1), 0 0 20px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.7);">Best Risk-Adjusted Return:</p>
+                    <p class="text-sm insight-text-content" style="color: #F3F4F6 !important; font-weight: 700 !important; font-size: 1rem !important; text-shadow: 0 0 8px rgba(243,244,246,0.9), 0 0 15px rgba(243,244,246,0.7), 0 2px 4px rgba(0,0,0,0.6);">{{ best_sharpe.symbol }} with Sharpe Ratio of {{ '%.2f'|format(best_sharpe.metrics.sharpe_ratio) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

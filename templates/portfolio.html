@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+{% block title %}{{ portfolio.portfolio_name }} - {{ app_name }}{% endblock %}
+
+{% block content %}
+<!-- Ultra-Modern Hero with Advanced Effects -->
+<div class="relative overflow-hidden py-24 mb-12" style="background: linear-gradient(135deg, #f093fb 0%, #764ba2 50%, #667eea 100%); background-size: 300% 300%; animation: gradient-shift 15s ease infinite;">
+    <!-- Cyber Grid Overlay -->
+    <div class="absolute inset-0 opacity-20 cyber-grid"></div>
+    
+    <!-- Dynamic Floating Orbs -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="blob" style="width: 450px; height: 450px; background: radial-gradient(circle, rgba(167, 139, 250, 0.8), transparent); top: -150px; left: 10%; animation: morph 12s ease-in-out infinite, float 10s ease-in-out infinite;"></div>
+        <div class="blob" style="width: 400px; height: 400px; background: radial-gradient(circle, rgba(236, 72, 153, 0.8), transparent); bottom: -150px; right: 15%; animation: morph 15s ease-in-out infinite reverse, float 12s ease-in-out infinite reverse;"></div>
+    </div>
+    
+    <!-- Content Container -->
+    <div class="container mx-auto px-4 relative z-20">
+        <div class="max-w-5xl mx-auto text-center stagger-children">
+            <!-- Back Button -->
+            <a href="{{ url_for('portfolio.dashboard') }}" class="inline-flex items-center glass-ultra px-6 py-3 rounded-2xl text-white hover:scale-105 transition-all duration-300 mb-8 font-bold text-lg shadow-2xl">
+                <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span class="text-shimmer">Back to Dashboard</span>
+            </a>
+            
+            <!-- Portfolio Title -->
+            <div class="inline-block mb-6 pulse-ring">
+                <span class="text-7xl animate-bounce" style="filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));">💼</span>
+            </div>
+            <h1 class="text-7xl font-black text-white mb-6 holographic" style="text-shadow: 0 0 50px rgba(255,255,255,0.6), 0 15px 40px rgba(0,0,0,0.4);">
+                {{ portfolio.portfolio_name }}
+            </h1>
+            <p class="text-3xl text-white font-bold mb-8" style="text-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                {{ portfolio.description or 'Track and manage your investments' }}
+            </p>
+            
+            <!-- Quick Stats Pills -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="glass-ultra px-8 py-4 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold text-lg">📊 {{ holdings|length }} Holdings</span>
+                </div>
+                <div class="glass-ultra px-8 py-4 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold text-lg">💰 ₹{{ '{:,.0f}'.format(analysis.total_invested or 0) }}</span>
+                </div>
+                <div class="glass-ultra px-8 py-4 rounded-2xl transform hover:scale-105 transition-all">
+                    <span class="text-white font-bold text-lg {% if (analysis.total_return or 0) >= 0 %}text-green-300{% else %}text-red-300{% endif %}">
+                        {{ '{:+.2f}'.format(analysis.return_percentage or 0) }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="space-y-8 container mx-auto px-4 pb-8">
+    <style>
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+    
+    <!-- Premium Action Buttons -->
+    <div class="flex flex-wrap justify-center gap-6 animate-slide-up mb-12" style="animation-delay: 0.2s;">
+        <button 
+            onclick="document.getElementById('addHoldingModal').classList.remove('hidden')"
+            class="btn-primary btn-magnetic ripple text-white px-12 py-6 rounded-3xl transition-all font-black text-xl shadow-2xl transform hover:scale-110 relative overflow-hidden group"
+        >
+            <span class="relative z-10 flex items-center gap-3">
+                <span class="text-3xl animate-bounce" style="animation-duration: 2s; animation-iteration-count: infinite;">✨</span>
+                Add Stock to Portfolio
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 group-hover:translate-x-full transition-all duration-700"></div>
+        </button>
+        <button 
+            onclick="confirmDeletePortfolio()"
+            class="btn-magnetic ripple text-white px-12 py-6 rounded-3xl transition-all font-black text-xl shadow-2xl transform hover:scale-110 relative overflow-hidden group"
+            style="background: linear-gradient(135deg, #ef4444, #dc2626);"
+        >
+            <span class="relative z-10 flex items-center gap-3">
+                <span class="text-3xl">🗑️</span>
+                Delete Portfolio
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 group-hover:translate-x-full transition-all duration-700"></div>
+        </button>
+    </div>
+    
+    <!-- Premium Health Score Card -->
+    <div class="glass-ultra rounded-3xl shadow-2xl p-10 mb-10 depth-card card-3d spotlight border-2 border-white/10 animate-slide-up" style="animation-delay: 0.3s;">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-4xl font-black gradient-text-animated flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #A78BFA 0%, #EC4899 100%); border: 2px solid rgba(167, 139, 250, 0.5);">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #FFFFFF !important; filter: brightness(2.5) saturate(1.8) drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                Portfolio Health Score
+            </h2>
+            <div class="glass-ultra px-6 py-3 rounded-2xl">
+                <span class="text-sm font-bold" style="color: var(--text-primary);">Last Updated: Now</span>
+            </div>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row items-center gap-10">
+            <!-- Score Display -->
+            <div class="flex-1 w-full">
+                <div class="relative">
+                    <!-- Large Score Number --><div class="text-center mb-6">
+                        <div class="inline-block relative">
+                            <svg class="transform -rotate-90 w-48 h-48" viewBox="0 0 200 200">
+                                <!-- Background Circle -->
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(var(--border-color), 0.3)" stroke-width="15"/>
+                                <!-- Progress Circle -->
+                                <circle cx="100" cy="100" r="80" fill="none" 
+                                    class="{% if analysis.health_score >= 70 %}stroke-green-500{% elif analysis.health_score >= 50 %}stroke-yellow-500{% else %}stroke-red-500{% endif %}"
+                                    stroke-width="15"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="{{ (analysis.health_score or 0) * 5.03 }} 503"
+                                    style="filter: drop-shadow(0 0 10px currentColor); transition: all 1s ease-out;"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <span class="text-6xl font-black holographic">
+                                        {{ '%.0f'|format(analysis.health_score or 0) }}
+                                    </span>
+                                    <p class="text-xl font-bold" style="color: var(--text-secondary);">/100</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Animated Progress Bar -->
+                    <div class="relative h-6 rounded-full overflow-hidden" style="background: rgba(var(--border-color), 0.3);">
+                        <div style="width: {{ analysis.health_score or 0 }}%" 
+                             class="h-full rounded-full relative overflow-hidden transition-all duration-1000 ease-out
+                             {% if analysis.health_score >= 70 %}bg-gradient-to-r from-green-400 to-green-600
+                             {% elif analysis.health_score >= 50 %}bg-gradient-to-r from-yellow-400 to-yellow-600
+                             {% else %}bg-gradient-to-r from-red-400 to-red-600{% endif %}">
+                            <!-- Shine Effect -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Legend with Premium Design -->
+            <div class="space-y-4 lg:border-l-2 lg:pl-10" style="border-color: rgba(var(--border-color), 0.3);">
+                <div class="flex items-center gap-4 group cursor-pointer transform hover:translate-x-2 transition-all">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg pulse-ring" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <span class="text-3xl">🌟</span>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold" style="color: var(--text-primary);">Excellent</p>
+                        <p class="text-sm" style="color: var(--text-secondary);">70-100 Points</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 group cursor-pointer transform hover:translate-x-2 transition-all">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg pulse-ring" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">
+                        <span class="text-3xl">⭐</span>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold" style="color: var(--text-primary);">Good</p>
+                        <p class="text-sm" style="color: var(--text-secondary);">50-69 Points</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 group cursor-pointer transform hover:translate-x-2 transition-all">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg pulse-ring" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <span class="text-3xl">⚠️</span>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold" style="color: var(--text-primary);">Needs Work</p>
+                        <p class="text-sm" style="color: var(--text-secondary);">0-49 Points</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-sm text-gray-600 mb-1">Total Invested</p>
+            <p class="text-2xl font-bold text-gray-900">₹{{ '{:,.0f}'.format(analysis.total_invested or 0) }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-sm text-gray-600 mb-1">Current Value</p>
+            <p class="text-2xl font-bold text-gray-900">₹{{ '{:,.0f}'.format(analysis.total_current or 0) }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-sm text-gray-600 mb-1">Total Return</p>
+            <p class="text-2xl font-bold {% if analysis.total_return >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                ₹{{ '{:,.0f}'.format(analysis.total_return or 0) }}
+            </p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-sm text-gray-600 mb-1">Return %</p>
+            <p class="text-2xl font-bold {% if analysis.return_percentage >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                {{ '{:+.2f}'.format(analysis.return_percentage or 0) }}%
+            </p>
+        </div>
+    </div>
+    
+    <!-- Holdings Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900">Holdings</h2>
+        </div>
+        
+        {% if holdings %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Price</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Price</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invested</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Value</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Return</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for holding in holdings %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div>
+                                <div class="font-semibold text-gray-900">{{ holding.stock_symbol }}</div>
+                                <div class="text-sm text-gray-500">{{ holding.stock_name or '-' }}</div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ holding.quantity }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{{ '{:,.2f}'.format(holding.purchase_price) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{{ '{:,.2f}'.format(holding.current_price or holding.purchase_price) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{{ '{:,.0f}'.format(holding.invested_amount) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{{ '{:,.0f}'.format(holding.current_value) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="text-sm font-semibold {% if holding.return_percentage >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                                {{ '{:+.2f}'.format(holding.return_percentage) }}%
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                            <a href="{{ url_for('stock.analyze_stock', stock_symbol=holding.stock_symbol) }}" 
+                               style="color: var(--primary);" class="hover:opacity-80 transition-opacity">Analyze</a>
+                            <button onclick="deleteHolding({{ holding.holding_id }})" 
+                                    class="text-red-600 hover:text-red-900">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-12 text-center">
+            <p class="text-gray-600 mb-4">No holdings in this portfolio yet.</p>
+            <button 
+                onclick="document.getElementById('addHoldingModal').classList.remove('hidden')"
+                class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition"
+            >
+                Add Your First Stock
+            </button>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Analysis Sections -->
+    {% if holdings %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Asset Allocation -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Asset Allocation</h3>
+            <canvas id="assetAllocationChart" width="400" height="300"></canvas>
+        </div>
+        
+        <!-- Sector Exposure -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Sector Exposure</h3>
+            <canvas id="sectorExposureChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+    
+    <!-- Risk Metrics -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Risk Analysis</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <p class="text-sm text-gray-600 mb-2">Portfolio Volatility</p>
+                <p class="text-2xl font-bold text-gray-900">{{ '%.2f'|format(analysis.portfolio_risk.volatility or 0) }}%</p>
+                <p class="text-sm {% if analysis.portfolio_risk.risk_level == 'Low' %}text-green-600{% elif analysis.portfolio_risk.risk_level == 'Medium' %}text-yellow-600{% else %}text-red-600{% endif %} mt-1">
+                    {{ analysis.portfolio_risk.risk_level }} Risk
+                </p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600 mb-2">Diversification Score</p>
+                <p class="text-2xl font-bold text-gray-900">{{ '%.0f'|format(analysis.diversification.score or 0) }}/100</p>
+                <p class="text-sm text-gray-600 mt-1">{{ analysis.diversification.status }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600 mb-2">Concentration Risk</p>
+                <p class="text-2xl font-bold text-gray-900">{{ '%.1f'|format(analysis.concentration_risk.max_single_stock or 0) }}%</p>
+                <p class="text-sm {% if analysis.concentration_risk.risk_level == 'Low' %}text-green-600{% elif analysis.concentration_risk.risk_level == 'Medium' %}text-yellow-600{% else %}text-red-600{% endif %} mt-1">
+                    {{ analysis.concentration_risk.risk_level }} Risk
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recommendations -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">AI Recommendations</h3>
+        <div class="space-y-4">
+            {% for rec in analysis.recommendations %}
+            <div class="p-4 rounded-lg border 
+                {% if rec.type == 'warning' %}border-yellow-300 bg-yellow-50
+                {% elif rec.type == 'alert' %}border-red-300 bg-red-50
+                {% elif rec.type == 'success' %}border-green-300 bg-green-50
+                {% else %}border-blue-300 bg-blue-50{% endif %}">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-3 text-2xl">
+                        {% if rec.type == 'warning' %}⚠️
+                        {% elif rec.type == 'alert' %}🚨
+                        {% elif rec.type == 'success' %}✅
+                        {% else %}ℹ️{% endif %}
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-900 mb-1">{{ rec.category }}</p>
+                        <p class="text-sm text-gray-700">{{ rec.message }}</p>
+                        <p class="text-xs text-gray-500 mt-1">Priority: {{ rec.priority }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Add Holding Modal -->
+<div id="addHoldingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Add Stock to Portfolio</h3>
+        <form method="POST" action="{{ url_for('portfolio.add_holding') }}">
+            <input type="hidden" name="portfolio_id" value="{{ portfolio.portfolio_id }}">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Stock Symbol *</label>
+                    <input type="text" name="stock_symbol" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                           placeholder="e.g., RELIANCE.NS">
+                    <p class="text-xs text-gray-500 mt-1">Use NSE symbols (e.g., TCS.NS, INFY.NS)</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
+                    <input type="number" name="quantity" step="0.01" min="0.01" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Price (₹) *</label>
+                    <input type="number" name="purchase_price" step="0.01" min="0.01" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Date *</label>
+                    <input type="date" name="purchase_date" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                </div>
+            </div>
+            <div class="mt-6 flex space-x-3">
+                <button type="button" onclick="document.getElementById('addHoldingModal').classList.add('hidden')"
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="flex-1 px-4 py-2 text-white rounded-lg btn-primary">
+                    Add Stock
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Asset Allocation Chart
+{% if analysis.asset_allocation %}
+const assetCtx = document.getElementById('assetAllocationChart').getContext('2d');
+new Chart(assetCtx, {
+    type: 'pie',
+    data: {
+        labels: {{ analysis.asset_allocation.keys()|list|tojson }},
+        datasets: [{
+            data: {{ analysis.asset_allocation.values()|list|tojson }},
+            backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+{% endif %}
+
+// Sector Exposure Chart
+{% if analysis.sector_exposure %}
+const sectorCtx = document.getElementById('sectorExposureChart').getContext('2d');
+new Chart(sectorCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ analysis.sector_exposure.keys()|list|tojson }},
+        datasets: [{
+            label: 'Exposure %',
+            data: {{ analysis.sector_exposure.values()|list|tojson }},
+            backgroundColor: '#8b5cf6'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
+    }
+});
+{% endif %}
+
+// Delete holding function
+function deleteHolding(holdingId) {
+    if (confirm('Are you sure you want to delete this holding?')) {
+        fetch(`/portfolio/delete-holding/${holdingId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting holding: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error);
+        });
+    }
+}
+
+// Delete portfolio function
+function confirmDeletePortfolio() {
+    if (confirm('⚠️ WARNING: This will permanently delete the portfolio "{{ portfolio.portfolio_name }}" and all its holdings!\n\nAre you absolutely sure you want to continue?')) {
+        // Double confirmation
+        if (confirm('This action cannot be undone. Delete portfolio?')) {
+            window.location.href = '{{ url_for("portfolio.delete_portfolio", portfolio_id=portfolio.portfolio_id) }}';
+        }
+    }
+}
+</script>
+{% endblock %}
