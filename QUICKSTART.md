@@ -1,4 +1,4 @@
-# 🚀 QUICK START GUIDE
+# QUICK START GUIDE
 
 ## Fastest Way to Get Started
 
@@ -67,7 +67,7 @@ Password: test123
 
 ---
 
-## 🎯 First Steps After Login
+##  First Steps After Login
 
 1. **View Dashboard** - See your portfolio overview
 2. **Create Portfolio** - Click "New Portfolio" button
@@ -81,7 +81,7 @@ Password: test123
 
 ---
 
-## ⚡ Quick Test Scenario
+##  Quick Test Scenario
 
 ```
 1. Login with demo_user/test123
@@ -98,7 +98,7 @@ Password: test123
 
 ---
 
-## 🐛 Common Issues & Quick Fixes
+##  Common Issues & Quick Fixes
 
 ### "Module not found"
 ```bash
@@ -123,7 +123,7 @@ app.run(port=5001)
 
 ---
 
-## 📱 Test Stock Symbols
+##  Test Stock Symbols
 
 **Quick Test Set:**
 ```
@@ -136,7 +136,7 @@ ITC.NS       - ITC Limited
 
 ---
 
-## 🔥 Pro Tips
+##  Pro Tips
 
 1. **Fast Data Loading**: Stocks cache for 5 minutes
 2. **Multiple Portfolios**: Create different risk profiles
@@ -146,7 +146,7 @@ ITC.NS       - ITC Limited
 
 ---
 
-## 📊 What to Expect
+##  What to Expect
 
 - **Load Time**: 5-10 seconds for stock analysis
 - **Data Source**: Real stock prices from Yahoo Finance
@@ -155,7 +155,7 @@ ITC.NS       - ITC Limited
 
 ---
 
-## 🎓 Learning Path
+##  Learning Path
 
 **Day 1**: Setup and explore UI  
 **Day 2**: Understand risk metrics  
@@ -165,7 +165,7 @@ ITC.NS       - ITC Limited
 
 ---
 
-## 📚 Key Files to Study
+##  Key Files to Study
 
 ```
 app.py                     → Flask app structure
@@ -177,7 +177,7 @@ templates/portfolio.html   → Frontend integration
 
 ---
 
-## 🛠️ Customization Ideas
+##  Customization Ideas
 
 1. Add more risk metrics
 2. Integrate real news API
@@ -189,7 +189,7 @@ templates/portfolio.html   → Frontend integration
 
 ---
 
-## ⚠️ Remember
+##  Remember
 
 - Educational purpose only
 - Not financial advice
@@ -198,7 +198,7 @@ templates/portfolio.html   → Frontend integration
 
 ---
 
-## 🆘 Need Help?
+##  Need Help?
 
 1. Check README.md for detailed docs
 2. Review code comments
@@ -209,4 +209,4 @@ templates/portfolio.html   → Frontend integration
 
 **Ready to Start? Run:** `python app.py`
 
-🎉 **Happy Learning!**
+ **Happy Learning!**
