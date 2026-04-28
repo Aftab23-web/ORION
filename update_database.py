@@ -57,12 +57,12 @@ try:
     for col in columns:
         print(f"  - {col[0]} ({col[1]})")
     
-    print("\n✅ Database update completed successfully!")
+    print("\n Database update completed successfully!")
     
     cursor.close()
     conn.close()
     
 except mysql.connector.Error as err:
-    print(f"❌ Database error: {err}")
+    print(f" Database error: {err}")
 except Exception as e:
-    print(f"❌ Error: {e}")
+    print(f" Error: {e}")

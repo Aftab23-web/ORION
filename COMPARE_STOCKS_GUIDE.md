@@ -1,24 +1,24 @@
-# 🔍 Stock Comparison with AI Investment Recommendation
+#  Stock Comparison with AI Investment Recommendation
 
 ## New Feature Overview
 
 Your stock comparison feature now includes **AI-powered investment recommendations** that analyze multiple stocks and suggest the best investment option with detailed reasoning!
 
-## 🎯 What's New
+##  What's New
 
 ### 1. **Smart Stock Name Recognition**
-   - ✅ Enter company names: "Reliance, TCS"
-   - ✅ Enter stock symbols: "RELIANCE.NS, TCS.NS"
-   - ✅ Mix both: "Apple, MSFT, Infosys"
-   - ✅ Works with US & Indian stocks
+   -  Enter company names: "Reliance, TCS"
+   -  Enter stock symbols: "RELIANCE.NS, TCS.NS"
+   -  Mix both: "Apple, MSFT, Infosys"
+   -  Works with US & Indian stocks
 
 ### 2. **AI Investment Recommendation**
-   - 🤖 Analyzes all compared stocks
-   - 📊 Scores each stock (0-100 points)
-   - 🎯 Recommends best investment
-   - ✅ Lists reasons to invest
-   - ⚠️ Highlights risk considerations
-   - 📈 Shows comparative scores
+   -  Analyzes all compared stocks
+   -  Scores each stock (0-100 points)
+   -  Recommends best investment
+   -  Lists reasons to invest
+   -  Highlights risk considerations
+   -  Shows comparative scores
 
 ### 3. **Comprehensive Analysis**
    - **Return Analysis** (25 points)
@@ -29,7 +29,7 @@ Your stock comparison feature now includes **AI-powered investment recommendatio
    - **Drawdown Risk** (10 points)
    - **Dividend Yield Bonus** (5 points)
 
-## 📋 How to Use
+##  How to Use
 
 ### Step 1: Navigate to Compare Stocks
 Open: **http://127.0.0.1:5000/stock/compare**
@@ -70,7 +70,7 @@ Example 4: RELIANCE.NS, INFY.NS
    - Risk metrics
    - Performance data
 
-## 🎓 Understanding the Recommendation
+##  Understanding the Recommendation
 
 ### Investment Strategies
 
@@ -121,7 +121,7 @@ Example 4: RELIANCE.NS, INFY.NS
 - >2% yield: 5 points
 - Provides passive income
 
-## 💡 Example Scenarios
+##  Example Scenarios
 
 ### Scenario 1: Compare Indian Tech Stocks
 **Input**: `Infosys, TCS, Wipro`
@@ -150,7 +150,7 @@ Example 4: RELIANCE.NS, INFY.NS
 - Risk-adjusted analysis
 - Recommendation for your portfolio
 
-## 🎨 Visual Features
+##  Visual Features
 
 ### AI Recommendation Card
 - **Purple Gradient Background**: Premium feel
@@ -160,12 +160,12 @@ Example 4: RELIANCE.NS, INFY.NS
 - **Comparative Bars**: Easy visual comparison
 
 ### Color Coding
-- 🟢 **Green**: Positive metrics, reasons to invest
-- 🟡 **Yellow**: Warnings, risk factors
-- 🔵 **Blue**: Neutral information
-- 🟣 **Purple**: Recommendations, highlights
+-  **Green**: Positive metrics, reasons to invest
+-  **Yellow**: Warnings, risk factors
+-  **Blue**: Neutral information
+-  **Purple**: Recommendations, highlights
 
-## ⚠️ Important Notes
+##  Important Notes
 
 1. **Educational Purpose Only**
    - This is NOT financial advice
@@ -182,7 +182,7 @@ Example 4: RELIANCE.NS, INFY.NS
    - Consider your risk tolerance
    - Diversify your portfolio
 
-## 🔧 Technical Details
+##  Technical Details
 
 ### AI Scoring Algorithm
 ```python
@@ -206,7 +206,7 @@ Total Score =
 6. Determine investment strategy
 7. Create comparative analysis
 
-## 📊 Metrics Explained
+##  Metrics Explained
 
 ### Sharpe Ratio
 - Measures risk-adjusted returns
@@ -232,7 +232,7 @@ Total Score =
 - <1.0 = Less volatile
 - >1.0 = More volatile
 
-## 🚀 Quick Start Examples
+##  Quick Start Examples
 
 ### Example 1: Compare 2 Stocks
 ```
@@ -255,7 +255,7 @@ Click: Compare
 Result: Comprehensive 5-way comparison
 ```
 
-## 🎯 Best Practices
+##  Best Practices
 
 1. **Compare Similar Stocks**
    - Same sector/industry
@@ -277,29 +277,29 @@ Result: Comprehensive 5-way comparison
    - High growth or stability?
    - Income (dividends) needed?
 
-## 🔗 Related Features
+##  Related Features
 
 - **Stock Search**: Find stocks by name
 - **Risk Analysis**: Detailed stock metrics
 - **Portfolio**: Track your investments
 - **Sentiment Analysis**: Market sentiment
 
-## 📱 Access the Feature
+##  Access the Feature
 
-🌐 **URL**: http://127.0.0.1:5000/stock/compare
+ **URL**: http://127.0.0.1:5000/stock/compare
 
 Or navigate from main menu: **Compare Stocks**
 
 ---
 
-## ✅ Feature Status: READY TO USE!
+##  Feature Status: READY TO USE!
 
 Your enhanced stock comparison feature is now live with:
-- ✅ Company name search
-- ✅ AI-powered recommendations
-- ✅ Detailed investment reasoning
-- ✅ Risk analysis
-- ✅ Visual scoring system
-- ✅ Comparative insights
+-  Company name search
+-  AI-powered recommendations
+-  Detailed investment reasoning
+-  Risk analysis
+-  Visual scoring system
+-  Comparative insights
 
 **Start comparing stocks and get AI recommendations now!** 🚀

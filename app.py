@@ -102,7 +102,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print("ORION (Operational Risk and Investment Optimization Network)")
     print("=" * 60)
-    print("⚠️  EDUCATIONAL PURPOSE ONLY - NOT FINANCIAL ADVICE")
+    print("  EDUCATIONAL PURPOSE ONLY - NOT FINANCIAL ADVICE")
     print("=" * 60)
     print(f"Environment: {env}")
     print(f"Debug Mode: {app.config['DEBUG']}")

@@ -30,7 +30,7 @@ def create_admin_user():
     existing_admin = cursor.fetchone()
     
     if existing_admin:
-        print(f"❌ Admin user already exists with email: {admin_email}")
+        print(f" Admin user already exists with email: {admin_email}")
         print(f"   Username: AdminAnkit")
         print(f"   Password: ankit@2004")
         cursor.close()
@@ -47,14 +47,14 @@ def create_admin_user():
              admin_full_name, 'Conservative', 1, 1)
         )
         conn.commit()
-        print("✅ Admin user created successfully!")
-        print(f"\n📧 Email: {admin_email}")
-        print(f"👤 Username: {admin_username}")
-        print(f"🔑 Password: {admin_password}")
-        print(f"\n🎯 You can now login with either username or email!")
+        print(" Admin user created successfully!")
+        print(f"\n Email: {admin_email}")
+        print(f" Username: {admin_username}")
+        print(f" Password: {admin_password}")
+        print(f"\n You can now login with either username or email!")
         
     except mysql.connector.Error as err:
-        print(f"❌ Error creating admin user: {err}")
+        print(f" Error creating admin user: {err}")
     finally:
         cursor.close()
         conn.close()

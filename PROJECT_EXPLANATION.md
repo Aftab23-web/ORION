@@ -1,9 +1,9 @@
-# 🎓 PROJECT EXPLANATION GUIDE
+#  PROJECT EXPLANATION GUIDE
 ## Understanding ORION (Operational Risk and Investment Optimization Network)
 
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 1. [System Architecture](#system-architecture)
 2. [How Each Module Works](#module-explanations)
 3. [Data Flow](#data-flow)
@@ -13,7 +13,7 @@
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ### Layer 1: Presentation (Frontend)
 - **HTML Templates** (Jinja2) - Server-side rendering
@@ -42,7 +42,7 @@
 
 ---
 
-## 🔍 Module Explanations
+##  Module Explanations
 
 ### 1. app.py - Main Application
 
@@ -407,22 +407,22 @@ else:
 
 ---
 
-## 🧠 AI Logic Deep Dive
+##  AI Logic Deep Dive
 
 ### Why Rule-Based Instead of ML?
 
 **Advantages**:
-1. ✅ **Explainable** - Every decision traceable
-2. ✅ **Transparent** - No hidden logic
-3. ✅ **Educational** - Students can understand
-4. ✅ **Debuggable** - Easy to fix/improve
-5. ✅ **Reliable** - Consistent behavior
+1.  **Explainable** - Every decision traceable
+2.  **Transparent** - No hidden logic
+3.  **Educational** - Students can understand
+4.  **Debuggable** - Easy to fix/improve
+5.  **Reliable** - Consistent behavior
 
 **Real-World ML Problems**:
-1. ❌ Black box - Can't explain decisions
-2. ❌ Data hungry - Needs lots of data
-3. ❌ Overfitting - May not generalize
-4. ❌ Unstable - Can make random predictions
+1.  Black box - Can't explain decisions
+2.  Data hungry - Needs lots of data
+3.  Overfitting - May not generalize
+4.  Unstable - Can make random predictions
 
 ### AI Decision Process
 
@@ -447,7 +447,7 @@ else:
 
 ---
 
-## 📊 Risk Calculations Explained
+##  Risk Calculations Explained
 
 ### 1. Volatility - How Much Prices Swing
 
@@ -529,7 +529,7 @@ How much does this stock move relative to the overall market?
 
 ---
 
-## 🎓 Educational Value
+##  Educational Value
 
 ### What This Project Teaches
 
@@ -565,7 +565,7 @@ How much does this stock move relative to the overall market?
 
 ---
 
-## 🔄 System Interactions
+##  System Interactions
 
 ### Database Interactions
 ```sql
@@ -604,7 +604,7 @@ if 'user_id' not in session:
 
 ---
 
-## 💡 Key Concepts Demonstrated
+##  Key Concepts Demonstrated
 
 ### 1. Separation of Concerns
 - Routes handle HTTP requests
@@ -641,7 +641,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 
 ---
 
-## 🎯 Real-World Applications
+##  Real-World Applications
 
 ### Skills Transferable To:
 
@@ -668,7 +668,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 
 ---
 
-## 📈 Learning Progression
+##  Learning Progression
 
 ### Beginner Level
 - Understand Flask basics
@@ -690,7 +690,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 
 ---
 
-## 🔬 Experimental Features
+##  Experimental Features
 
 ### Try These Enhancements:
 
@@ -716,14 +716,14 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 
 ---
 
-## 🏁 Conclusion
+##  Conclusion
 
 This project demonstrates:
-✅ Complete software development lifecycle
-✅ Real-world problem solving
-✅ Multiple technology integration
-✅ Financial domain knowledge
-✅ Best practices and patterns
+ Complete software development lifecycle
+ Real-world problem solving
+ Multiple technology integration
+ Financial domain knowledge
+ Best practices and patterns
 
 **It's a portfolio-worthy, production-like educational system!**
 
@@ -731,4 +731,4 @@ This project demonstrates:
 
 **Remember**: This is a learning tool. The real value is in understanding HOW and WHY each component works, not just THAT it works.
 
-**Keep Learning! 🚀**
+**Keep Learning! **

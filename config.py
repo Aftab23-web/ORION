@@ -78,7 +78,7 @@ class Config:
     
     # Educational Disclaimers
     DISCLAIMER_TEXT = """
-    ⚠️ EDUCATIONAL PURPOSE ONLY ⚠️
+     EDUCATIONAL PURPOSE ONLY 
     
     This application is designed for educational and analytical purposes only.
     

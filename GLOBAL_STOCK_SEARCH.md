@@ -1,14 +1,14 @@
-# 🌍 GLOBAL STOCK SEARCH - WORLDWIDE ACCESS!
+#  GLOBAL STOCK SEARCH - WORLDWIDE ACCESS!
 
-## ✅ NOW LIVE: Search ANY Stock from 70+ Countries!
+##  NOW LIVE: Search ANY Stock from 70+ Countries!
 
 Your app now has **Twelve Data API** integration - the BEST free API for real-time global stock data!
 
 ---
 
-## 🚀 What's New?
+##  What's New?
 
-### ✨ Twelve Data API Integration
+###  Twelve Data API Integration
 - **800 API calls per day** (Free tier)
 - **Real-time data** from 70+ countries
 - **Worldwide stock coverage**: US, India, Europe, Asia, Latin America, Middle East
@@ -17,7 +17,7 @@ Your app now has **Twelve Data API** integration - the BEST free API for real-ti
 
 ---
 
-## 🌎 Supported Markets
+##  Supported Markets
 
 ### 🇺🇸 United States
 - **Exchanges**: NYSE, NASDAQ, AMEX
@@ -75,7 +75,7 @@ Your app now has **Twelve Data API** integration - the BEST free API for real-ti
 
 ---
 
-## 🔍 How to Search for ANY Stock
+##  How to Search for ANY Stock
 
 ### Method 1: Smart Search (BEST)
 ```
@@ -96,7 +96,7 @@ Know the symbol? Use it directly:
 
 ---
 
-## 🎯 Example Searches
+##  Example Searches
 
 ### Search: "Apple"
 **Results:**
@@ -121,37 +121,37 @@ Know the symbol? Use it directly:
 
 ---
 
-## 📊 What You Get
+##  What You Get
 
 ### Real-Time Data:
-- ✅ Current price (live)
-- ✅ Daily high/low
-- ✅ Trading volume
-- ✅ 52-week high/low
-- ✅ Price change %
+-  Current price (live)
+-  Daily high/low
+-  Trading volume
+-  52-week high/low
+-  Price change %
 
 ### Risk Analysis:
-- ✅ Volatility (annualized)
-- ✅ Sharpe Ratio
-- ✅ Maximum Drawdown
-- ✅ Value at Risk (VaR)
-- ✅ Beta (market correlation)
+-  Volatility (annualized)
+-  Sharpe Ratio
+-  Maximum Drawdown
+-  Value at Risk (VaR)
+-  Beta (market correlation)
 
 ### AI Recommendations:
-- ✅ Buy/Hold/Sell decision
-- ✅ Confidence score
-- ✅ Detailed reasoning
-- ✅ Risk factors
-- ✅ Opportunity factors
+-  Buy/Hold/Sell decision
+-  Confidence score
+-  Detailed reasoning
+-  Risk factors
+-  Opportunity factors
 
 ### Charts:
-- ✅ 90-day price history
-- ✅ Interactive Chart.js visualization
-- ✅ Historical trends
+-  90-day price history
+-  Interactive Chart.js visualization
+-  Historical trends
 
 ---
 
-## 🚀 Quick Test Examples
+##  Quick Test Examples
 
 ### Test 1: US Tech Stock
 ```
@@ -190,7 +190,7 @@ See: Side-by-side global comparison
 
 ---
 
-## 🔑 API Keys Setup
+##  API Keys Setup
 
 ### Current Setup (Already Working!):
 ```
@@ -219,7 +219,7 @@ FINNHUB_API_KEY="d5991m1r01qnj71iir3gd5991m1r01qnj71iir40"
 
 ---
 
-## 🌟 Popular Worldwide Stocks
+##  Popular Worldwide Stocks
 
 ### US Tech Giants
 - **AAPL** - Apple Inc.
@@ -254,7 +254,7 @@ FINNHUB_API_KEY="d5991m1r01qnj71iir3gd5991m1r01qnj71iir40"
 
 ---
 
-## 💡 Pro Tips
+##  Pro Tips
 
 ### 1. Use Country Filters
 ```
@@ -285,7 +285,7 @@ Some companies trade on multiple exchanges:
 
 ---
 
-## 📈 Data Sources Priority
+##  Data Sources Priority
 
 **Your app uses multi-tier fallback:**
 
@@ -298,7 +298,7 @@ Some companies trade on multiple exchanges:
 
 ---
 
-## 🎓 Educational Value
+##  Educational Value
 
 ### What You're Learning:
 - **Multi-API Integration** - Professional fallback systems
@@ -316,7 +316,7 @@ Some companies trade on multiple exchanges:
 
 ---
 
-## ✅ Testing Checklist
+##  Testing Checklist
 
 - [ ] Search US stock (AAPL)
 - [ ] Search Indian stock (RELIANCE.NS)
@@ -331,15 +331,15 @@ Some companies trade on multiple exchanges:
 
 ---
 
-## 🔥 Ready to Use!
+##  Ready to Use!
 
 **Your app now supports:**
-- ✅ 70+ countries
-- ✅ Thousands of stocks
-- ✅ Real-time data
-- ✅ Multiple exchanges
-- ✅ Global comparisons
-- ✅ AI analysis for all
+-  70+ countries
+-  Thousands of stocks
+-  Real-time data
+-  Multiple exchanges
+-  Global comparisons
+-  AI analysis for all
 
 **Access it now:**
 ```
@@ -358,7 +358,7 @@ http://127.0.0.1:5000/stock/search
 
 ---
 
-## 📞 Need More Countries?
+##  Need More Countries?
 
 The Twelve Data API supports **70+ countries** including:
 - 🇧🇷 Brazil (B3)
